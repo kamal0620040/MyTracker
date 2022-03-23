@@ -32,9 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
     String res = await AuthMethods().loginUser(
         email: _emailController.text, password: _passwordController.text);
     if (res == "success") {
-      // Navigator.of(context).pushReplacement(
-      //   MaterialPageRoute(builder: (context) => const HomeScreen()),
-      // );
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
     } else {
       // Show snackbar
       showSnackBar(res, context);
@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void navigateToSignUp() {
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => const SignupScreen(),
       ),

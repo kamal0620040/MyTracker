@@ -6,6 +6,7 @@ import 'package:mytracker/resources/auth_methods.dart';
 import 'package:mytracker/screens/login_screen.dart';
 import 'package:mytracker/widgets/text_field_input.dart';
 import '../utils/utils.dart';
+import 'home_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -52,13 +53,15 @@ class _SignupScreenState extends State<SignupScreen> {
     if (res != 'success') {
       showSnackBar(res, context);
     } else {
-      //
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
+      );
     }
     // print(res);
   }
 
   void navigateToLogin() {
-    Navigator.of(context).push(
+    Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => const LoginScreen(),
       ),
