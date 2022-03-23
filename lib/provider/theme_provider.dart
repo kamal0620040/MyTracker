@@ -9,11 +9,23 @@ class ThemeProvider extends ChangeNotifier {
 
 class MyThemes {
   static final darkTheme = ThemeData(
+    brightness: Brightness.dark,
     scaffoldBackgroundColor: mobileBackgroundColorDark,
+    inputDecorationTheme: const InputDecorationTheme(
+      fillColor: mobileBackgroundColorDark,
+
+      // Not used form here
+      // border: OutlineInputBorder(
+      //   borderSide: BorderSide(color: Colors.pink, width: 1.0),
+      // ),
+    ),
     colorScheme: const ColorScheme.dark(),
   );
   static final lightTheme = ThemeData(
     scaffoldBackgroundColor: mobileBackgroundColorLight,
+    inputDecorationTheme: const InputDecorationTheme(
+      fillColor: mobileBackgroundColorLight,
+    ),
     colorScheme: const ColorScheme.light(),
   );
 }
