@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mytracker/resources/auth_methods.dart';
+import 'package:mytracker/screens/login_screen.dart';
 import 'package:mytracker/widgets/text_field_input.dart';
 import '../utils/utils.dart';
 
@@ -54,6 +55,14 @@ class _SignupScreenState extends State<SignupScreen> {
       //
     }
     // print(res);
+  }
+
+  void navigateToLogin() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const LoginScreen(),
+      ),
+    );
   }
 
   @override
@@ -250,7 +259,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               padding: const EdgeInsets.symmetric(vertical: 8),
                             ),
                             GestureDetector(
-                              onTap: () {},
+                              onTap: navigateToLogin,
                               child: Container(
                                 child: Text(
                                   " Sign In",

@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mytracker/provider/theme_provider.dart';
+import 'package:mytracker/screens/home_screen.dart';
 import 'package:mytracker/screens/login_screen.dart';
 import 'package:mytracker/screens/signup_screen.dart';
 import 'package:mytracker/utils/colors.dart';
@@ -43,7 +45,7 @@ class MyApp extends StatelessWidget {
       //     ),
       //   ),
       // ),
-      home: const SignupScreen(),
+      home: const LoginScreen(),
     );
   }
 }
