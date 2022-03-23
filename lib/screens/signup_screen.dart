@@ -1,6 +1,10 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mytracker/resources/auth_methods.dart';
 import 'package:mytracker/widgets/text_field_input.dart';
+import '../utils/utils.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -13,6 +17,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  Uint8List? _image;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -20,6 +26,34 @@ class _SignupScreenState extends State<SignupScreen> {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
+  }
+
+  void signUpUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().signUpUser(
+      email: _emailController.text,
+      password: _passwordController.text,
+      name: _nameController.text,
+      file: _image!,
+    );
+    setState(() {
+      _isLoading = false;
+    });
+    if (res != 'success') {
+      showSnackBar(res, context);
+    } else {
+      //
+    }
+    // print(res);
   }
 
   @override
@@ -74,18 +108,23 @@ class _SignupScreenState extends State<SignupScreen> {
                         // circular widget to accept and show our selected file
                         Stack(
                           children: [
-                            const Center(
-                              child: CircleAvatar(
-                                radius: 64,
-                                backgroundImage: NetworkImage(
-                                    "https://scontent.fktm6-1.fna.fbcdn.net/v/t1.15752-9/275991517_379301487372923_3465182913503674080_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=ae9488&_nc_ohc=yLeFaXWZzY4AX-nTDHQ&tn=xGAR1u5kKRoEgpGx&_nc_ht=scontent.fktm6-1.fna&oh=03_AVJFYXnpVK0LACxUDVgbI6-qN0kDGhF4fjspY8fVhKuBTw&oe=625F7450"),
-                              ),
+                            Center(
+                              child: _image != null
+                                  ? CircleAvatar(
+                                      radius: 64,
+                                      backgroundImage: MemoryImage(_image!),
+                                    )
+                                  : const CircleAvatar(
+                                      radius: 64,
+                                      backgroundImage: NetworkImage(
+                                          "https://freepikpsd.com/file/2019/10/default-profile-picture-png-1-Transparent-Images.png"),
+                                    ),
                             ),
                             Positioned(
                               bottom: -10,
                               left: 175,
                               child: IconButton(
-                                onPressed: () {},
+                                onPressed: selectImage,
                                 icon: const Icon(Icons.add_a_photo),
                               ),
                             ),
@@ -152,16 +191,27 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         //button signup
                         InkWell(
+                          onTap: signUpUser,
                           child: Container(
-                            child: Text(
-                              "Create account",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
+                            child: _isLoading
+                                ? const Center(
+                                    child: SizedBox(
+                                      child: CircularProgressIndicator(
+                                        color: Color.fromRGBO(255, 255, 255, 1),
+                                      ),
+                                      height: 20,
+                                      width: 20,
+                                    ),
+                                  )
+                                : Text(
+                                    "Create account",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
                             width: double.infinity,
                             alignment: Alignment.center,
                             padding: const EdgeInsets.symmetric(vertical: 20),
