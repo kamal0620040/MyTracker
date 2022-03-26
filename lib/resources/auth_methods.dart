@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mytracker/models/users.dart' as model;
 import 'package:mytracker/resources/storage_methods.dart';
 
 class AuthMethods {
@@ -30,12 +31,16 @@ class AuthMethods {
             await StorageMethods().uploadImageToStorage('profilePics', file);
 
         // add user to our database
-        await _firestore.collection('users').doc(cred.user!.uid).set({
-          'uid': cred.user!.uid,
-          'name': name,
-          'email': email,
-          'photoUrl': photoUrl,
-        });
+        model.User user = model.User(
+          uid: cred.user!.uid,
+          name: name,
+          email: email,
+          photoUrl: photoUrl,
+        );
+
+        await _firestore.collection('users').doc(cred.user!.uid).set(
+              user.toJson(),
+            );
         res = "success";
       }
     }
