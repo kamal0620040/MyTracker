@@ -3,10 +3,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mytracker/provider/theme_provider.dart';
+import 'package:mytracker/provider/user_provider.dart';
 import 'package:mytracker/screens/home_screen.dart';
 import 'package:mytracker/screens/login_screen.dart';
 import 'package:mytracker/screens/signup_screen.dart';
 import 'package:mytracker/utils/colors.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,45 +30,52 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: mobileBackgroundColorDark),
     );
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'MyTracker',
-      themeMode: ThemeMode.system,
-      theme: MyThemes.lightTheme,
-      darkTheme: MyThemes.darkTheme,
-      // home: const SafeArea(
-      //   child: Scaffold(
-      //     // appBar: AppBar(
-      //     //   title: const Text("Temporary"),
-      //     //   backgroundColor: Colors.green,
-      //     // ),
-      //     body: Center(
-      //       child: Text("Here, we go..."),
-      //     ),
-      //   ),
-      // ),
-      // home: const LoginScreen(),
-      home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              if (snapshot.hasData) {
-                return const HomeScreen();
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text('${snapshot.error}'),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'MyTracker',
+        themeMode: ThemeMode.system,
+        theme: MyThemes.lightTheme,
+        darkTheme: MyThemes.darkTheme,
+        // home: const SafeArea(
+        //   child: Scaffold(
+        //     // appBar: AppBar(
+        //     //   title: const Text("Temporary"),
+        //     //   backgroundColor: Colors.green,
+        //     // ),
+        //     body: Center(
+        //       child: Text("Here, we go..."),
+        //     ),
+        //   ),
+        // ),
+        // home: const LoginScreen(),
+        home: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                if (snapshot.hasData) {
+                  return const HomeScreen();
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('${snapshot.error}'),
+                  );
+                }
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                  ),
                 );
               }
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(
-                  color: Color.fromRGBO(255, 255, 255, 1),
-                ),
-              );
-            }
-            return const LoginScreen();
-          }),
+              return const LoginScreen();
+            }),
+      ),
     );
   }
 }
