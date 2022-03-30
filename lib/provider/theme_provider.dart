@@ -25,6 +25,14 @@ class MyThemes {
       primaryContrastingColor: Color.fromRGBO(202, 202, 202, 1),
       barBackgroundColor: mobileBackgroundColorDark,
     ),
+    appBarTheme: AppBarTheme(backgroundColor: mobileBackgroundColorDark),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        onPrimary: Colors.white,
+        primary: mobileBackgroundColorDark,
+        side: BorderSide(color: Color.fromRGBO(87, 87, 87, 1), width: 1.0),
+      ),
+    ),
     colorScheme: const ColorScheme.dark(),
   );
   static final lightTheme = ThemeData(
@@ -37,6 +45,7 @@ class MyThemes {
       primaryContrastingColor: Color.fromRGBO(202, 202, 202, 1),
       barBackgroundColor: mobileBackgroundColorLight,
     ),
+    appBarTheme: AppBarTheme(backgroundColor: mobileBackgroundColorLight),
     colorScheme: const ColorScheme.light(),
   );
 }
