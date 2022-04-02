@@ -45,7 +45,18 @@ class MyThemes {
       primaryContrastingColor: Color.fromRGBO(202, 202, 202, 1),
       barBackgroundColor: mobileBackgroundColorLight,
     ),
-    appBarTheme: AppBarTheme(backgroundColor: mobileBackgroundColorLight),
+    appBarTheme: AppBarTheme(
+      backgroundColor: mobileBackgroundColorLight,
+      foregroundColor: Colors.black,
+      elevation: 0,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        onPrimary: Colors.black,
+        primary: mobileBackgroundColorLight,
+        side: BorderSide(color: Color.fromRGBO(87, 87, 87, 1), width: 1.0),
+      ),
+    ),
     colorScheme: const ColorScheme.light(),
   );
 }

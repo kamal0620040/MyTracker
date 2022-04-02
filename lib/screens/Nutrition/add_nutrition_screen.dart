@@ -3,7 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:mytracker/resources/firestore_methods.dart';
 import 'package:mytracker/utils/utils.dart';
+import 'package:provider/provider.dart';
+import '../../models/users.dart';
+import '../../provider/user_provider.dart';
 import '../../widgets/text_field_input.dart';
 
 class AddNutrition extends StatefulWidget {
@@ -19,8 +23,11 @@ class _AddNutritionState extends State<AddNutrition> {
   TextEditingController _proteinController = TextEditingController();
   TextEditingController _fatsController = TextEditingController();
   TextEditingController _carbController = TextEditingController();
+  TextEditingController _quantityController = TextEditingController();
+  TextEditingController _servingController = TextEditingController();
   DateTime date = DateTime.now();
   bool _isLoading = false;
+  bool _isLoadingForPost = false;
   List<String> datelist = [
     'Jan',
     'Feb',
@@ -63,17 +70,43 @@ class _AddNutritionState extends State<AddNutrition> {
       // print(jsondata["parsed"][0]["food"]["nutrients"]);
       setState(() {
         // _nameController.text = "test";
-        _proteinController.text = jsondata["parsed"][0]["food"]["nutrients"]
-                ["PROCNT"]
-            .toStringAsFixed(2);
-        _energyController.text = jsondata["parsed"][0]["food"]["nutrients"]
-                ["ENERC_KCAL"]
-            .toStringAsFixed(2);
-        _fatsController.text = jsondata["parsed"][0]["food"]["nutrients"]["FAT"]
-            .toStringAsFixed(2);
-        _carbController.text = jsondata["parsed"][0]["food"]["nutrients"]
-                ["CHOCDF"]
-            .toStringAsFixed(2);
+        if (_quantityController.text.isEmpty) {
+          _proteinController.text = jsondata["parsed"][0]["food"]["nutrients"]
+                  ["PROCNT"]
+              .toStringAsFixed(2);
+          _energyController.text = jsondata["parsed"][0]["food"]["nutrients"]
+                  ["ENERC_KCAL"]
+              .toStringAsFixed(2);
+          _fatsController.text = jsondata["parsed"][0]["food"]["nutrients"]
+                  ["FAT"]
+              .toStringAsFixed(2);
+          _carbController.text = jsondata["parsed"][0]["food"]["nutrients"]
+                  ["CHOCDF"]
+              .toStringAsFixed(2);
+          _quantityController.text =
+              jsondata["parsed"][0]["quantity"].toStringAsFixed(2);
+          _servingController.text =
+              jsondata["parsed"][0]["measure"]["label"].toString();
+        } else {
+          _proteinController.text = (jsondata["parsed"][0]["food"]["nutrients"]
+                      ["PROCNT"] *
+                  double.parse(_quantityController.text))
+              .toStringAsFixed(2);
+          _energyController.text = (jsondata["parsed"][0]["food"]["nutrients"]
+                      ["ENERC_KCAL"] *
+                  double.parse(_quantityController.text))
+              .toStringAsFixed(2);
+          _fatsController.text = (jsondata["parsed"][0]["food"]["nutrients"]
+                      ["FAT"] *
+                  double.parse(_quantityController.text))
+              .toStringAsFixed(2);
+          _carbController.text = (jsondata["parsed"][0]["food"]["nutrients"]
+                      ["CHOCDF"] *
+                  double.parse(_quantityController.text))
+              .toStringAsFixed(2);
+          _servingController.text =
+              jsondata["parsed"][0]["measure"]["label"].toString();
+        }
       });
     } else if (response.statusCode == 400) {
       if (_nameController.text.isEmpty) {
@@ -87,6 +120,52 @@ class _AddNutritionState extends State<AddNutrition> {
     }
   }
 
+  void clear() {
+    _nameController.clear();
+    _quantityController.clear();
+    _servingController.clear();
+    _energyController.clear();
+    _proteinController.clear();
+    _fatsController.clear();
+    _carbController.clear();
+    setState(() {
+      meal = null;
+    });
+  }
+
+  void post(
+    String uid,
+  ) async {
+    try {
+      setState(() {
+        _isLoadingForPost = true;
+      });
+      String res = await FireStoreMethods().uploadNutrition(
+        _nameController.text,
+        uid,
+        date,
+        meal!,
+        double.parse(_quantityController.text),
+        _servingController.text,
+        double.parse(_energyController.text),
+        double.parse(_proteinController.text),
+        double.parse(_fatsController.text),
+        double.parse(_carbController.text),
+      );
+      setState(() {
+        _isLoadingForPost = false;
+      });
+      if (res == "success") {
+        showSnackBar('Posted', context);
+        clear();
+      } else {
+        showSnackBar(res, context);
+      }
+    } catch (err) {
+      showSnackBar(err.toString(), context);
+    }
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -94,16 +173,21 @@ class _AddNutritionState extends State<AddNutrition> {
     _proteinController.dispose();
     _fatsController.dispose();
     _energyController.dispose();
+    _quantityController.dispose();
+    _servingController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {},
+          icon: Icon(Icons.clear),
+          onPressed: () {
+            clear();
+          },
         ),
         title: Text("Add something"),
         centerTitle: true,
@@ -119,221 +203,317 @@ class _AddNutritionState extends State<AddNutrition> {
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         width: double.infinity,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "What did you eat?",
-              style: GoogleFonts.poppins(
-                textStyle:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        child: LayoutBuilder(builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight,
+              ),
+              child: IntrinsicHeight(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      child: Container(),
+                      flex: 1,
+                    ),
+                    Text(
+                      "What did you eat?",
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    TextFieldInput(
+                      textEditingController: _nameController,
+                      hintText: "Write Here",
+                      textInputType: TextInputType.text,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Date:",
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () async {
+                                DateTime? newDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: date,
+                                  firstDate: DateTime(2005),
+                                  lastDate: DateTime(2030),
+                                );
+
+                                // if 'CANCEL' => null
+                                if (newDate == null) return;
+
+                                // if 'OK' => Datetime
+                                setState(() {
+                                  date = newDate;
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(Icons.date_range),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    '${datelist[date.month - 1]} ${date.day}, ${date.year}',
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Meal:",
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            DropdownButton(
+                              value: meal,
+                              items: items.map(buildMenuItem).toList(),
+                              onChanged: (value) => setState(
+                                () {
+                                  meal = value.toString();
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Quantity:"),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFieldInput(
+                                textEditingController: _quantityController,
+                                hintText: "Write Here",
+                                textInputType: TextInputType.text,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Unit:"),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFieldInput(
+                                textEditingController: _servingController,
+                                hintText: "Write Here",
+                                textInputType: TextInputType.text,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Nutrient:"),
+                        GestureDetector(
+                          onTap: doSomething,
+                          child: Container(
+                            child: _isLoading
+                                ? const Center(
+                                    child: SizedBox(
+                                      child: CircularProgressIndicator(
+                                        color: Color.fromRGBO(255, 255, 255, 1),
+                                      ),
+                                      height: 21,
+                                      width: 21,
+                                    ),
+                                  )
+                                : Text(
+                                    "Autofill",
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        color: Color.fromRGBO(101, 146, 233, 1),
+                                      ),
+                                    ),
+                                  ),
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Energy (g):"),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFieldInput(
+                                textEditingController: _energyController,
+                                hintText: "Write Here",
+                                textInputType: TextInputType.text,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Protien (kcal):"),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFieldInput(
+                                textEditingController: _proteinController,
+                                hintText: "Write Here",
+                                textInputType: TextInputType.text,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Fats (g):"),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFieldInput(
+                                textEditingController: _fatsController,
+                                hintText: "Write Here",
+                                textInputType: TextInputType.text,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Carb (g):"),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              TextFieldInput(
+                                textEditingController: _carbController,
+                                hintText: "Write Here",
+                                textInputType: TextInputType.text,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        post(user.uid);
+                      },
+                      child: Container(
+                        child: _isLoadingForPost
+                            ? const Center(
+                                child: SizedBox(
+                                  child: CircularProgressIndicator(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                  ),
+                                  height: 20,
+                                  width: 20,
+                                ),
+                              )
+                            : Text(
+                                "Add Food",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        decoration: const ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4),
+                            ),
+                          ),
+                          color: Color.fromRGBO(101, 146, 233, 1),
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Container(),
+                      flex: 1,
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextFieldInput(
-              textEditingController: _nameController,
-              hintText: "Write Here",
-              textInputType: TextInputType.text,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Date:",
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        DateTime? newDate = await showDatePicker(
-                          context: context,
-                          initialDate: date,
-                          firstDate: DateTime(2005),
-                          lastDate: DateTime(2030),
-                        );
-
-                        // if 'CANCEL' => null
-                        if (newDate == null) return;
-
-                        // if 'OK' => Datetime
-                        setState(() {
-                          date = newDate;
-                        });
-                      },
-                      child: Row(
-                        children: [
-                          Icon(Icons.date_range),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            '${datelist[date.month - 1]} ${date.day}, ${date.year}',
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Meal:",
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                    DropdownButton(
-                      value: meal,
-                      items: items.map(buildMenuItem).toList(),
-                      onChanged: (value) => setState(
-                        () {
-                          meal = value.toString();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Nutrient:"),
-                GestureDetector(
-                  onTap: doSomething,
-                  child: Container(
-                    child: _isLoading
-                        ? const Center(
-                            child: SizedBox(
-                              child: CircularProgressIndicator(
-                                color: Color.fromRGBO(255, 255, 255, 1),
-                              ),
-                              height: 21,
-                              width: 21,
-                            ),
-                          )
-                        : Text(
-                            "Autofill",
-                            style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                color: Color.fromRGBO(101, 146, 233, 1),
-                              ),
-                            ),
-                          ),
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            // TextFieldInput(
-            //   textEditingController: _nameController,
-            //   hintText: "Write Here",
-            //   textInputType: TextInputType.text,
-            // ),
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Energy (g):"),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextFieldInput(
-                        textEditingController: _energyController,
-                        hintText: "Write Here",
-                        textInputType: TextInputType.text,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Protien (kcal):"),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextFieldInput(
-                        textEditingController: _proteinController,
-                        hintText: "Write Here",
-                        textInputType: TextInputType.text,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Fats (g):"),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextFieldInput(
-                        textEditingController: _fatsController,
-                        hintText: "Write Here",
-                        textInputType: TextInputType.text,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Carb (g):"),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      TextFieldInput(
-                        textEditingController: _carbController,
-                        hintText: "Write Here",
-                        textInputType: TextInputType.text,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+          );
+        }),
       ),
     );
   }
