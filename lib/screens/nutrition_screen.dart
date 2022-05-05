@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:mytracker/models/users.dart' as model;
 import 'package:mytracker/provider/user_provider.dart';
 import 'package:mytracker/screens/Nutrition/add_nutrition_screen.dart';
+import 'package:mytracker/screens/Nutrition/home_nutrition_screen.dart';
+import 'package:mytracker/screens/Nutrition/list_nutrition_screen.dart';
 import 'package:provider/provider.dart';
 
 class Nutrition extends StatefulWidget {
@@ -44,8 +46,8 @@ class _NutritionState extends State<Nutrition> {
     return Scaffold(
       body: PageView(
         children: [
-          Text('Home'),
-          Text('Lists'),
+          HomeNutrition(),
+          ListScreen(),
           AddNutrition(),
           Text('bar'),
           Text('Settings'),

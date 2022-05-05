@@ -147,6 +147,8 @@ class _AddNutritionState extends State<AddNutrition> {
       final docRef = FirebaseFirestore.instance
           .collection('monthly')
           .doc(uid)
+          .collection("year")
+          .doc(date.year.toString())
           .collection('month')
           .doc(datelist[date.month - 1]);
 
