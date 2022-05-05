@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Month {
-  final int protein;
-  final int energy;
-  final int fats;
-  final int carbs;
+  final double protein;
+  final double energy;
+  final double fats;
+  final double carbs;
 
   const Month({
     required this.protein,
