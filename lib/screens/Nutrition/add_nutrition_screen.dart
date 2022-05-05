@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:mytracker/models/monthly.dart';
 import 'package:mytracker/resources/firestore_methods.dart';
 import 'package:mytracker/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -140,6 +142,42 @@ class _AddNutritionState extends State<AddNutrition> {
       setState(() {
         _isLoadingForPost = true;
       });
+
+      // Getting the courrent month data
+      final docRef = FirebaseFirestore.instance
+          .collection('monthly')
+          .doc(uid)
+          .collection('month')
+          .doc(datelist[date.month - 1]);
+
+      DocumentSnapshot value = await docRef.get();
+      // print(value.data());
+      // print(double.parse(value['carbs'].toString()));
+      if (value.exists) {
+        String ares = await FireStoreMethods().uploadMonth(
+          uid,
+          date.year.toString(),
+          datelist[date.month - 1],
+          double.parse(_proteinController.text) +
+              double.parse(value['protein'].toString()),
+          double.parse(_energyController.text) +
+              double.parse(value['energy'].toString()),
+          double.parse(_fatsController.text) +
+              double.parse(value['fats'].toString()),
+          double.parse(_carbController.text) +
+              double.parse(value['carbs'].toString()),
+        );
+      } else {
+        String ares = await FireStoreMethods().uploadMonth(
+          uid,
+          date.year.toString(),
+          datelist[date.month - 1],
+          double.parse(_proteinController.text),
+          double.parse(_energyController.text),
+          double.parse(_fatsController.text),
+          double.parse(_carbController.text),
+        );
+      }
       String res = await FireStoreMethods().uploadNutrition(
         _nameController.text,
         uid,
