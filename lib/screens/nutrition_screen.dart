@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:mytracker/models/users.dart' as model;
+import 'package:mytracker/models/users.dart' as model;
 // import 'package:mytracker/provider/user_provider.dart';
 import 'package:mytracker/screens/Nutrition/add_nutrition_screen.dart';
 import 'package:mytracker/screens/Nutrition/home_nutrition_screen.dart';
 import 'package:mytracker/screens/Nutrition/list_nutrition_screen.dart';
 import 'package:mytracker/screens/Nutrition/nutrition_stats.dart';
+import 'package:provider/provider.dart';
+import '../provider/user_provider.dart';
 // import 'package:provider/provider.dart';
 
 class Nutrition extends StatefulWidget {
@@ -43,11 +45,13 @@ class _NutritionState extends State<Nutrition> {
 
   @override
   Widget build(BuildContext context) {
-    // model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       body: PageView(
         children: [
-          HomeNutrition(),
+          HomeNutrition(
+            uid: user.uid,
+          ),
           ListScreen(),
           AddNutrition(),
           NutritionStats(),

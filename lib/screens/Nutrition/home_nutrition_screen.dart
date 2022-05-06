@@ -9,13 +9,15 @@ import '../../provider/user_provider.dart';
 import '../../widgets/nutrition_card.dart';
 
 class HomeNutrition extends StatefulWidget {
-  const HomeNutrition({Key? key}) : super(key: key);
+  final String uid;
+  const HomeNutrition({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<HomeNutrition> createState() => _HomeNutritionState();
 }
 
 class _HomeNutritionState extends State<HomeNutrition> {
+  bool _isLoading = false;
   List<String> datelist = [
     'Jan',
     'Feb',
@@ -46,14 +48,29 @@ class _HomeNutritionState extends State<HomeNutrition> {
         .collection('month')
         .doc(datelist[now.month - 1])
         .snapshots()
-        .listen((DocumentSnapshot value) {
+        .listen((DocumentSnapshot value) async {
       fat = value['fats'].ceil();
       protein = value['protein'].ceil();
       energy = value['energy'].ceil();
       carbs = value['carbs'].ceil();
-      print(fat);
     });
-
+    // FirebaseFirestore.instance
+    //   .collection('monthly')
+    //   .doc(uid)
+    //   .collection("year")
+    //   .doc(now.year.toString())
+    //   .collection('month')
+    //   .doc(datelist[now.month - 1])
+    //   .snapshots()
+    //   .listen((DocumentSnapshot value) {
+    // setState(() {
+    //   fat = value['fats'].ceil();
+    //   protein = value['protein'].ceil();
+    //   energy = value['energy'].ceil();
+    //   carbs = value['carbs'].ceil();
+    //   print(fat);
+    // });
+    // });
     // DocumentSnapshot value = await docRef.get();
     // if (value.exists) {
     //   fat = value['fats'].ceil();
@@ -65,9 +82,8 @@ class _HomeNutritionState extends State<HomeNutrition> {
 
   @override
   void initState() {
-    fat = 100;
-    carbs = 100;
     super.initState();
+    // _isLoading = false;
   }
 
   @override
