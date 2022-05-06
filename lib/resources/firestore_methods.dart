@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mytracker/models/expense.dart';
 import 'package:mytracker/models/monthly.dart';
 import 'package:mytracker/models/post_nutrition.dart';
 import 'package:uuid/uuid.dart';
@@ -79,4 +80,36 @@ class FireStoreMethods {
     }
     return res;
   }
+
+  // Upload Expense
+  Future<String> uploadExpense(
+
+  String uid,
+  String title,
+  double amount,
+  DateTime date,
+  String category,
+  ) async {
+    String res = "Some error occured.";
+    try {
+      String expenseId = const Uuid().v1();
+      PostExpense postExpense = PostExpense(
+       id: expenseId,
+        title: title,
+        amount: amount,
+        date: date,
+        category: category,
+      
+      );
+
+      _firestore.collection("expensePost").doc(uid).collection("Expense").doc(expenseId).set(
+            postExpense.toJson(),
+          );
+      res = "success";
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
 }
+

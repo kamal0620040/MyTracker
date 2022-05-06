@@ -98,15 +98,15 @@ final DUMMY_CATEGORIES = [
   ),
 ];
 
-class Category {
-  final String title;
-  final Color color;
-  final Icon expenseCategoryIcon;
-  Category(
-      {required this.title,
-      required this.color,
-      required this.expenseCategoryIcon});
-}
+// class Category {
+//   final String title;
+//   final Color color;
+//   final Icon expenseCategoryIcon;
+//   Category(
+//       {required this.title,
+//       required this.color,
+//       required this.expenseCategoryIcon});
+// }
 
 class CategoryExpense extends StatelessWidget {
   static const routeNAme = '/categoryexpense';
@@ -129,7 +129,6 @@ class CategoryExpense extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TimerServices timerServices = context.watch<TimerServices>();
     return InkWell(
       onTap: () {
         Navigator.push(

@@ -2,22 +2,35 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mytracker/resources/firestore_methods.dart';
+import 'package:provider/provider.dart';
+
+import '../../../models/users.dart';
+import '../../../provider/user_provider.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTx;
+  final String categoryTitle;
+  
 
-  NewTransaction(this.addTx);
+  NewTransaction(this.addTx,this.categoryTitle);
 
   @override
-  State<NewTransaction> createState() => _NewTransactionState();
+  State<NewTransaction> createState() => _NewTransactionState(categoryTitle);
 }
 
 class _NewTransactionState extends State<NewTransaction> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
+  final catTitle;
+  
   DateTime? _selectedDate;
 
-  void _submitData() {
+  _NewTransactionState(this.catTitle);
+
+  void _submitData(String uid) async {
+    print(catTitle);
+
     if (_amountController.text.isEmpty) {
       return;
     }
@@ -27,6 +40,15 @@ class _NewTransactionState extends State<NewTransaction> {
     if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == null) {
       return;
     }
+
+    String res = await FireStoreMethods().uploadExpense(
+      uid,
+      enteredTitle,
+      enteredAmount,
+      _selectedDate!,
+      catTitle,
+    );
+    print(res);
 
     widget.addTx(
       enteredTitle,
@@ -56,6 +78,7 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
+    User user = Provider.of<UserProvider>(context).getUser;
     return Card(
       elevation: 5,
       child: Container(
@@ -69,7 +92,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 labelText: 'Title',
               ),
               controller: _titleController,
-              onSubmitted: (_) => _submitData(),
+              onSubmitted: (_) => _submitData(user.uid),
             ),
             TextField(
               decoration: InputDecoration(
@@ -77,7 +100,7 @@ class _NewTransactionState extends State<NewTransaction> {
               ),
               controller: _amountController,
               keyboardType: TextInputType.number,
-              onSubmitted: (_) => _submitData(),
+              onSubmitted: (_) => _submitData(user.uid),
             ),
             Container(
               height: 70,
@@ -104,7 +127,7 @@ class _NewTransactionState extends State<NewTransaction> {
               ),
             ),
             RaisedButton(
-              onPressed: _submitData,
+              onPressed: ()=>_submitData(user.uid),
               child: Text(
                 'Add Transaction',
                 style: TextStyle(

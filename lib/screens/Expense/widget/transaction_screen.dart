@@ -7,7 +7,7 @@ import './transaction_list.dart';
 import './chart.dart';
 
 class TransactionScreen extends StatefulWidget {
-  final String title;
+  final String title;//this is category title passed from category.dart
   TransactionScreen({Key? key, required this.title}) : super(key: key);
 
   @override
@@ -16,7 +16,7 @@ class TransactionScreen extends StatefulWidget {
 
 class _TransactionScreenState extends State<TransactionScreen> {
   static final List<Transaction> _userTransactions = [
-    Transaction(
+    /* Transaction(
       id: 't1',
       title: 'Futsal',
       amount: 7.69,
@@ -50,7 +50,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
       amount: 10.56,
       date: DateTime.now(),
       category: 'Sports',
-    ),
+    ), */
   ];
 
   List<Transaction> get _recentTransactions {
@@ -79,13 +79,15 @@ class _TransactionScreenState extends State<TransactionScreen> {
   }
 
   void startAddNewTransaction(BuildContext ctx) {
+    print(_userTransactions.length);
+    print(_recentTransactions.length);
     // print(widget.title);
     showModalBottomSheet(
         context: ctx,
         builder: (_) {
           return GestureDetector(
             onTap: () {}, //to not disapper sheet when tapped
-            child: NewTransaction(_addNewTransaction),
+            child: NewTransaction(_addNewTransaction,widget.title),
             behavior: HitTestBehavior.opaque,
           );
         });
