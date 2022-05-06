@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 class ChartBar extends StatelessWidget {
-  final String label;// label is the days of the week
+  final String label; // label is the days of the week
   final double spendingAmount;
   final double spendingPercentageOfTotal;
 
@@ -13,8 +13,9 @@ class ChartBar extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 20,
-          child: FittedBox(child: Text('\$ ${spendingAmount.toStringAsFixed(0)}'))),
+            height: 20,
+            child: FittedBox(
+                child: Text('\$ ${spendingAmount.toStringAsFixed(0)}'))),
         SizedBox(
           height: 4,
         ),
@@ -25,8 +26,16 @@ class ChartBar extends StatelessWidget {
             children: [
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 1.0),
-                  color: Color.fromRGBO(220, 220, 200, 1),
+                  border: Border.all(
+                    color: Colors.red,
+                    // color: Theme.of(context).primaryColor,
+
+                    width: 1.0,
+                  ),
+                  // color: Color.fromRGBO(220, 220, 200, 1),
+                  color: Color.fromARGB(255, 195, 2, 79),
+                  // color: Theme.of(context).primaryColor,
+
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -34,7 +43,8 @@ class ChartBar extends StatelessWidget {
                 heightFactor: spendingPercentageOfTotal,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
+                    // color: Theme.of(context).primaryColor,
+                    color: Colors.cyanAccent,
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),

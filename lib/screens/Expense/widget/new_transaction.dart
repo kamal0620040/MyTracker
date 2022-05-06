@@ -12,7 +12,7 @@ class NewTransaction extends StatefulWidget {
   final Function addTx;
   final String categoryTitle;
   
-
+ //addTx is function that will be passed from transaction_screen ie._addNewTransaction(String , double , DateTime )
   NewTransaction(this.addTx,this.categoryTitle);
 
   @override
@@ -41,6 +41,7 @@ class _NewTransactionState extends State<NewTransaction> {
       return;
     }
 
+    //upon submiting data it is also uploaded into firebase
     String res = await FireStoreMethods().uploadExpense(
       uid,
       enteredTitle,
@@ -50,12 +51,15 @@ class _NewTransactionState extends State<NewTransaction> {
     );
     print(res);
 
+    //upon submiting, addTx method is called 
     widget.addTx(
       enteredTitle,
       enteredAmount,
       _selectedDate,
     );
 
+    //after submitting the value, the showModalBottomSheet should disappear so we have pop one screen back
+    //otherwise we have to mannually click of background
     Navigator.of(context).pop();
   }
 
@@ -78,6 +82,7 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
+    //this class is provided from users.dart
     User user = Provider.of<UserProvider>(context).getUser;
     return Card(
       elevation: 5,
@@ -92,7 +97,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 labelText: 'Title',
               ),
               controller: _titleController,
-              onSubmitted: (_) => _submitData(user.uid),
+              // onSubmitted: (_) => _submitData(user.uid),
             ),
             TextField(
               decoration: InputDecoration(
@@ -100,7 +105,7 @@ class _NewTransactionState extends State<NewTransaction> {
               ),
               controller: _amountController,
               keyboardType: TextInputType.number,
-              onSubmitted: (_) => _submitData(user.uid),
+              // onSubmitted: (_) => _submitData(user.uid),
             ),
             Container(
               height: 70,

@@ -8,6 +8,9 @@ import './chart_bar.dart';
 class Chart extends StatefulWidget {
   final List<Transaction> recentTransactions;
   final String categoryTitle;
+
+  //chart consists of only recent transactions of associated category
+  //It comes from transaction_screen.dart
   Chart(this.recentTransactions, this.categoryTitle);
 
   @override
@@ -16,40 +19,50 @@ class Chart extends StatefulWidget {
 
 class _ChartState extends State<Chart> {
   List<Map<String, Object>> get groupedTransactionValues {
-    return List.generate(7, (index) {
-      //shows last 7 days bar
-      final weekDay = DateTime.now().subtract(
-        Duration(days: index),
-      );
-      var totalSum = 0.0;
+    return List.generate(
+      7,
+      (index) {
+        //shows last 7 days bar
+        final weekDay = DateTime.now().subtract(
+          Duration(days: index),
+        );
+        var totalSum = 0.0; //it will be used to calculate ratio in bargraph
 
-      //hjdhakjd
-      final List<Transaction> recentTrans = widget.recentTransactions
-          .where((element) => element.category == widget.categoryTitle)
-          .toList();
+        //this recentTrans list
+        final List<Transaction> recentTrans = widget.recentTransactions
+            .where((element) =>
+                element.category ==
+                widget
+                    .categoryTitle) //we need to match category otherwise, one categories data is shared with others
+            .toList();
 
-      /* for (var i = 0; i < widget.recentTransactions.length; i++) {
+        /* for (var i = 0; i < widget.recentTransactions.length; i++) {
         if (widget.recentTransactions[i].date.day == weekDay.day &&
             widget.recentTransactions[i].date.month == weekDay.month &&
             widget.recentTransactions[i].date.year == weekDay.year) {
           totalSum += widget.recentTransactions[i].amount;
         }
       } */
-      for (var i = 0; i < recentTrans.length; i++) {
-        if (recentTrans[i].date.day == weekDay.day &&
-            recentTrans[i].date.month == weekDay.month &&
-            recentTrans[i].date.year == weekDay.year) {
-          totalSum += recentTrans[i].amount;
-        }
-      }
 
-      // print(DateFormat.E().format(weekDay));
-      // print(totalSum);
-      return {
-        'day': DateFormat.E().format(weekDay).substring(0, 3),
-        'amount': totalSum,
-      };
-    }).reversed.toList();
+        for (var i = 0; i < recentTrans.length; i++) {
+          //corresponding days must be matched otherwise, each day will get the total sum
+          if (recentTrans[i].date.day == weekDay.day &&
+              recentTrans[i].date.month == weekDay.month &&
+              recentTrans[i].date.year == weekDay.year) {
+            totalSum += recentTrans[i].amount;
+          }
+          // totalSum += recentTrans[i].amount;
+
+        }
+
+        // print(DateFormat.E().format(weekDay));
+        // print(totalSum);
+        return {
+          'day': DateFormat.E().format(weekDay).substring(0, 3),
+          'amount': totalSum,
+        };
+      },
+    ).reversed.toList();
   }
 
   double get totalSpending {
@@ -74,7 +87,7 @@ class _ChartState extends State<Chart> {
               child: ChartBar(
                 (data['day'] as String),
                 (data['amount'] as double),
-                totalSpending == 0.0
+                totalSpending == 0.0//initally when there is no transaction
                     ? 0.0
                     : (data['amount'] as double) / totalSpending,
               ),

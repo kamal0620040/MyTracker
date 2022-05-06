@@ -7,7 +7,7 @@ import './transaction_list.dart';
 import './chart.dart';
 
 class TransactionScreen extends StatefulWidget {
-  final String title;//this is category title passed from category.dart
+  final String title;//this will be category's title passed from category.dart
   TransactionScreen({Key? key, required this.title}) : super(key: key);
 
   @override
@@ -15,6 +15,7 @@ class TransactionScreen extends StatefulWidget {
 }
 
 class _TransactionScreenState extends State<TransactionScreen> {
+  
   static final List<Transaction> _userTransactions = [
     /* Transaction(
       id: 't1',
@@ -53,6 +54,9 @@ class _TransactionScreenState extends State<TransactionScreen> {
     ), */
   ];
 
+
+  //this is a getter method to extract the transactions from _userTransactions which is done within a week
+  //it is used in Chart
   List<Transaction> get _recentTransactions {
     return _userTransactions.where((tx) {
       return tx.date.isAfter(
@@ -78,9 +82,10 @@ class _TransactionScreenState extends State<TransactionScreen> {
     });
   }
 
+  //this method start processing of adding new transaction by Calling
   void startAddNewTransaction(BuildContext ctx) {
-    print(_userTransactions.length);
-    print(_recentTransactions.length);
+    // print(_userTransactions.length);
+    // print(_recentTransactions.length);
     // print(widget.title);
     showModalBottomSheet(
         context: ctx,
@@ -129,6 +134,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.cyanAccent,
         child: Icon(Icons.add),
         onPressed: () => startAddNewTransaction(context),
       ),

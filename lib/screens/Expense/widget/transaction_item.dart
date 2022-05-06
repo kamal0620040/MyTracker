@@ -23,11 +23,19 @@ class TransactionItem extends StatelessWidget {
       ),
       child: ListTile(
         leading: CircleAvatar(
+          backgroundColor: Colors.greenAccent,
           radius: 30,
           child: Padding(
-              padding: EdgeInsets.all(6),
-              child: FittedBox(
-                  child: Text('\$ ${transaction.amount.toStringAsFixed(2)}'))),
+            padding: EdgeInsets.all(6),
+            child: FittedBox(
+              child: Text(
+                '\$ ${transaction.amount.toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
         ),
         title: Text(
           transaction.title,
