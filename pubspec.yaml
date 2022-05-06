@@ -38,6 +38,11 @@ dependencies:
   uuid: ^3.0.6
   table_calendar: ^3.0.5
   sleek_circular_slider: ^2.0.1
+  shared_preferences: ^2.0.13
+  flutter_svg: ^1.0.3
+  collection: ^1.14.13
+  fl_chart: ^0.46.0
+  sticky_headers: ^0.2.0
   flutter:
     sdk: flutter
 

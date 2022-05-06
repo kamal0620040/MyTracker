@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mytracker/models/monthly.dart';
 import 'package:mytracker/models/post_nutrition.dart';
+import 'package:mytracker/models/post_time.dart';
 import 'package:uuid/uuid.dart';
 
 class FireStoreMethods {
@@ -32,6 +33,46 @@ class FireStoreMethods {
           .doc(currentMonth)
           .set(
             month.toJson(),
+          );
+      res = "success";
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  //Upload Time
+  Future<String> uploadTime(
+    String userId,
+    String title,
+    String time,
+    bool active,
+    String startTime,
+    String startTimePause,
+    String categoryTime,
+    String timeDesc,
+    bool isFavorite,
+  ) async {
+    String res = "Some error occured";
+    try {
+      String timeId = const Uuid().v1();
+      PostTime postTime = PostTime(
+        id: timeId,
+        active: active,
+        startTime: startTime,
+        startTimePause: startTimePause,
+        title: title,
+        time: time,
+        categoryTime: categoryTime,
+        timeDesc: timeDesc,
+      );
+      _firestore
+          .collection("timePost")
+          .doc(userId)
+          .collection("Time")
+          .doc(timeId)
+          .set(
+            postTime.toJson(),
           );
       res = "success";
     } catch (err) {
