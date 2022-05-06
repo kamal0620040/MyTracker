@@ -86,345 +86,347 @@ class _HomeNutritionState extends State<HomeNutrition> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
           width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                title: Text(
-                  "Hello, ${user.name}!",
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ListTile(
+                  title: Text(
+                    "Hello, ${user.name}!",
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  subtitle: Text(
+                    "Subtitle is here",
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w400),
+                    ),
+                  ),
+                  leading: CircleAvatar(
+                    radius: 25,
+                    child: ClipOval(
+                      child: Image.network(
+                        user.photoUrl,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    _RadialProgress(
+                      width: width * 0.4,
+                      height: width * 0.4,
+                      energyValue: energy,
+                      progress: (energy as num) / 1000, // 1000 is target value
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _IngredientProgress(
+                          ingredient: "Protein",
+                          progress: (protein as int) /
+                              300, // 300 is protein target value
+                          progressColor: Colors.redAccent,
+                          leftAmount: 300 - (protein as int),
+                          width: width * 0.28,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        _IngredientProgress(
+                          ingredient: "Carbs",
+                          progress: (carbs as num) / 200,
+                          progressColor: Colors.deepPurpleAccent,
+                          leftAmount: 200 - (carbs as int),
+                          width: width * 0.28,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        _IngredientProgress(
+                          ingredient: "Fats",
+                          progress: (fat as num) / 200,
+                          progressColor: Colors.teal,
+                          leftAmount: 100 - (fat as int),
+                          width: width * 0.28,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Text(
+                  "Today:",
                   style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w600),
-                  ),
-                ),
-                subtitle: Text(
-                  "Subtitle is here",
-                  style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w400),
-                  ),
-                ),
-                leading: CircleAvatar(
-                  radius: 25,
-                  child: ClipOval(
-                    child: Image.network(
-                      user.photoUrl,
-                      width: 100,
-                      height: 100,
-                      fit: BoxFit.cover,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  _RadialProgress(
-                    width: width * 0.4,
-                    height: width * 0.4,
-                    energyValue: energy,
-                    progress: (energy as num) / 1000, // 1000 is target value
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _IngredientProgress(
-                        ingredient: "Protein",
-                        progress: (protein as int) /
-                            300, // 300 is protein target value
-                        progressColor: Colors.redAccent,
-                        leftAmount: 300 - (protein as int),
-                        width: width * 0.28,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      _IngredientProgress(
-                        ingredient: "Carbs",
-                        progress: (carbs as num) / 200,
-                        progressColor: Colors.deepPurpleAccent,
-                        leftAmount: 200 - (carbs as int),
-                        width: width * 0.28,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      _IngredientProgress(
-                        ingredient: "Fats",
-                        progress: (fat as num) / 200,
-                        progressColor: Colors.teal,
-                        leftAmount: 100 - (fat as int),
-                        width: width * 0.28,
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              Text(
-                "Today:",
-                style: GoogleFonts.poppins(
-                  textStyle: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 20,
-                  ),
+                SizedBox(
+                  height: 10,
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Icon(Icons.breakfast_dining),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    child: Text(
-                      "Breakfast:",
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
+                Row(
+                  children: [
+                    Icon(Icons.breakfast_dining),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: Text(
+                        "Breakfast:",
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("nutritionPost")
-                    .orderBy("date")
-                    .where('date', isGreaterThanOrEqualTo: startOfTheDay)
-                    .where('date', isLessThan: endOfTheDay)
-                    .where('meal', isEqualTo: 'Breakfast')
-                    .where('uid', isEqualTo: user.uid)
-                    .snapshots(),
-                builder: (context,
-                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                        snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  // print(snapshot.data!.docs.length);
-                  if (snapshot.data!.docs.length == 0) {
-                    return Container(
-                      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5),
+                  ],
+                ),
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("nutritionPost")
+                      .orderBy("date")
+                      .where('date', isGreaterThanOrEqualTo: startOfTheDay)
+                      .where('date', isLessThan: endOfTheDay)
+                      .where('meal', isEqualTo: 'Breakfast')
+                      .where('uid', isEqualTo: user.uid)
+                      .snapshots(),
+                  builder: (context,
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                          snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    // print(snapshot.data!.docs.length);
+                    if (snapshot.data!.docs.length == 0) {
+                      return Container(
+                        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 1),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5),
+                          ),
                         ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 16),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.hourglass_empty),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            child: Text(
-                              "Nothing to show.",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 16),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.hourglass_empty),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                              child: Text(
+                                "Nothing to show.",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                  ),
                                 ),
                               ),
                             ),
+                          ],
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) => NutritionCard(
+                        snap: snapshot.data!.docs[index].data(),
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.lunch_dining),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: Text(
+                        "Lunch:",
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
                           ),
-                        ],
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (context, index) => NutritionCard(
-                      snap: snapshot.data!.docs[index].data(),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Icon(Icons.lunch_dining),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    child: Text(
-                      "Lunch:",
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("nutritionPost")
-                    .orderBy("date")
-                    .where('date', isGreaterThanOrEqualTo: startOfTheDay)
-                    .where('date', isLessThan: endOfTheDay)
-                    .where('meal', isEqualTo: 'Lunch')
-                    .where('uid', isEqualTo: user.uid)
-                    .snapshots(),
-                builder: (context,
-                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                        snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  // print(snapshot.data!.docs.length);
-                  if (snapshot.data!.docs.length == 0) {
-                    return Container(
-                      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5),
+                  ],
+                ),
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("nutritionPost")
+                      .orderBy("date")
+                      .where('date', isGreaterThanOrEqualTo: startOfTheDay)
+                      .where('date', isLessThan: endOfTheDay)
+                      .where('meal', isEqualTo: 'Lunch')
+                      .where('uid', isEqualTo: user.uid)
+                      .snapshots(),
+                  builder: (context,
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                          snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    // print(snapshot.data!.docs.length);
+                    if (snapshot.data!.docs.length == 0) {
+                      return Container(
+                        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 1),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5),
+                          ),
                         ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 16),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.hourglass_empty),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            child: Text(
-                              "Nothing to show.",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 16),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.hourglass_empty),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                              child: Text(
+                                "Nothing to show.",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                  ),
                                 ),
                               ),
                             ),
+                          ],
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) => NutritionCard(
+                        snap: snapshot.data!.docs[index].data(),
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.dinner_dining),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                      child: Text(
+                        "Dinner:",
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
                           ),
-                        ],
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (context, index) => NutritionCard(
-                      snap: snapshot.data!.docs[index].data(),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Icon(Icons.dinner_dining),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                    child: Text(
-                      "Dinner:",
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 18,
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("nutritionPost")
-                    .orderBy("date")
-                    .where('date', isGreaterThanOrEqualTo: startOfTheDay)
-                    .where('date', isLessThan: endOfTheDay)
-                    .where('meal', isEqualTo: 'Dinner')
-                    .where('uid', isEqualTo: user.uid)
-                    .snapshots(),
-                builder: (context,
-                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                        snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  if (snapshot.data!.docs.length == 0) {
-                    return Container(
-                      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5),
+                  ],
+                ),
+                StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection("nutritionPost")
+                      .orderBy("date")
+                      .where('date', isGreaterThanOrEqualTo: startOfTheDay)
+                      .where('date', isLessThan: endOfTheDay)
+                      .where('meal', isEqualTo: 'Dinner')
+                      .where('uid', isEqualTo: user.uid)
+                      .snapshots(),
+                  builder: (context,
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                          snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.data!.docs.length == 0) {
+                      return Container(
+                        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border.all(width: 1),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5),
+                          ),
                         ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 16),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.hourglass_empty),
-                          Container(
-                            margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            child: Text(
-                              "Nothing to show.",
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 16),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(Icons.hourglass_empty),
+                            Container(
+                              margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                              child: Text(
+                                "Nothing to show.",
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) => NutritionCard(
+                        snap: snapshot.data!.docs[index].data(),
                       ),
                     );
-                  }
-                  return ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (context, index) => NutritionCard(
-                      snap: snapshot.data!.docs[index].data(),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(
-                height: 15,
-              ),
-            ],
+                  },
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+              ],
+            ),
           ),
         ),
       ),
