@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mytracker/screens/Nutrition/settings_nutrition.dart';
 import 'package:provider/provider.dart';
 import 'package:vector_math/vector_math_64.dart' as math;
 
@@ -185,7 +186,53 @@ class _HomeNutritionState extends State<HomeNutrition> {
                     }
                     // return Text(snapshot.data.toString());
                     if (snapshot.data == false) {
-                      return Text("No Data");
+                      return Container(
+                        // margin: EdgeInsets.fromLTRB(10, 8, 0, 8),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Color.fromRGBO(87, 87, 87, 1),
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5),
+                          ),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 16),
+                        child: Column(
+                          children: [
+                            Text(
+                              "In order to view your this month status you need to set your goals.\n",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "Click on the below icon to set it :",
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => NutritionSetting(),
+                                  ),
+                                );
+                              },
+                              icon: Icon(Icons.settings),
+                            ),
+                          ],
+                        ),
+                      );
                     } else {
                       // return Container(
                       //   child: Column(children: [

@@ -268,71 +268,184 @@ class _NutritionSettingState extends State<NutritionSetting> {
                                     SizedBox(
                                       height: 15,
                                     ),
-                                    Text(
-                                      "Protein",
-                                      style: GoogleFonts.poppins(
-                                        textStyle: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 20,
+                                    Container(
+                                      // margin: EdgeInsets.fromLTRB(10, 8, 0, 8),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          width: 1,
+                                          color: Color.fromRGBO(87, 87, 87, 1),
+                                        ),
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(5),
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                        goalData!["protein"].toString() + ' g'),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Text(
-                                      "Energy",
-                                      style: GoogleFonts.poppins(
-                                        textStyle: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 20,
-                                        ),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 16),
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            "Following are you montly nutrient goals :\n",
+                                            textAlign: TextAlign.center,
+                                            style: GoogleFonts.poppins(
+                                              textStyle: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                              // margin: EdgeInsets.fromLTRB(10, 8, 0, 8),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  width: 1,
+                                                  color: Color.fromRGBO(
+                                                      87, 87, 87, 1),
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(5),
+                                                ),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 16),
+                                              child: Column(children: [
+                                                Text(
+                                                  "Protein",
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(goalData!["protein"]
+                                                        .toString() +
+                                                    ' g'),
+                                              ])),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Container(
+                                              // margin: EdgeInsets.fromLTRB(10, 8, 0, 8),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  width: 1,
+                                                  color: Color.fromRGBO(
+                                                      87, 87, 87, 1),
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(5),
+                                                ),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 16),
+                                              child: Column(children: [
+                                                Text(
+                                                  "Energy",
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(goalData!["energy"]
+                                                        .toString() +
+                                                    ' kcal'),
+                                              ])),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Container(
+                                              // margin: EdgeInsets.fromLTRB(10, 8, 0, 8),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  width: 1,
+                                                  color: Color.fromRGBO(
+                                                      87, 87, 87, 1),
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(5),
+                                                ),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 16),
+                                              child: Column(children: [
+                                                Text(
+                                                  "Fats",
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(goalData!["fats"]
+                                                        .toString() +
+                                                    ' g'),
+                                              ])),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          Container(
+                                              // margin: EdgeInsets.fromLTRB(10, 8, 0, 8),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  width: 1,
+                                                  color: Color.fromRGBO(
+                                                      87, 87, 87, 1),
+                                                ),
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(5),
+                                                ),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 16),
+                                              child: Column(children: [
+                                                Text(
+                                                  "Carbohydrates",
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 20,
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(goalData!["carbs"]
+                                                        .toString() +
+                                                    ' g'),
+                                              ])),
+                                          SizedBox(
+                                            height: 15,
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(goalData!["energy"].toString() +
-                                        ' kcal'),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Text(
-                                      "Carbs",
-                                      style: GoogleFonts.poppins(
-                                        textStyle: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(goalData!["carbs"].toString() + ' g'),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    Text(
-                                      "Fats",
-                                      style: GoogleFonts.poppins(
-                                        textStyle: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(goalData!["fats"].toString() + ' g'),
-                                    SizedBox(
-                                      height: 10,
                                     ),
                                   ]),
                             );
