@@ -61,6 +61,7 @@ class OnBoardingPage extends StatelessWidget {
           onDone: () {
             Navigator.of(context).pushNamed(TimerApp.routeName);
           },
+          dotsDecorator: getDotDecoration(),
           showNextButton: true,
           next: const Icon(Icons.arrow_forward),
           showSkipButton: true,
@@ -72,6 +73,11 @@ class OnBoardingPage extends StatelessWidget {
   }
 }
 
+DotsDecorator getDotDecoration() => DotsDecorator(
+      color: Colors.purple,
+      activeColor: Colors.purple,
+      activeSize: Size(18, 20),
+    );
 Widget buildImage(String path) {
   return Center(
     child: SvgPicture.asset(
