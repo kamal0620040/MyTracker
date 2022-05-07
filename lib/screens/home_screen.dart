@@ -4,6 +4,8 @@ import 'package:mytracker/models/users.dart';
 import 'package:mytracker/provider/user_provider.dart';
 import 'package:mytracker/resources/auth_methods.dart';
 import 'package:mytracker/screens/login_screen.dart';
+import 'package:mytracker/screens/Time/onboarding_page.dart';
+import 'package:mytracker/screens/Time/timer_app.dart';
 import 'package:mytracker/screens/nutrition_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -35,12 +37,21 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void navigateToTime() {
-    // TODO:WIll be done later
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const TimerApp(),
+      ),
+    );
   }
+  // void navigateToTime() {
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (context) => const OnBoardingPage(),
+  //     ),
+  //   );
+  // }
 
-  void navigateToExpense() {
-    // TODO:WIll be done later
-  }
+  void navigateToExpense() {}
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: 35,
+              height: 55,
             ),
             ListTile(
               title: Text(

@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mytracker/provider/theme_provider.dart';
 import 'package:mytracker/provider/user_provider.dart';
+import 'package:mytracker/screens/Time/description_time.dart';
+import 'package:mytracker/screens/Time/event_list.dart';
+import 'package:mytracker/screens/Time/timer_app.dart';
+import 'package:mytracker/screens/Time/timer_service.dart';
 import 'package:mytracker/screens/home_screen.dart';
 import 'package:mytracker/screens/login_screen.dart';
 import 'package:mytracker/utils/colors.dart';
@@ -31,6 +35,7 @@ class MyApp extends StatelessWidget {
     );
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (ctx) => TimerServices()),
         ChangeNotifierProvider(
           create: (_) => UserProvider(),
         ),
@@ -53,6 +58,13 @@ class MyApp extends StatelessWidget {
         //   ),
         // ),
         // home: const LoginScreen(),
+        // home: const TimerApp(),
+
+        routes: {
+          TimerApp.routeName: (ctx) => const TimerApp(),
+          EventList.routeName: (ctx) => const EventList(),
+          DescriptionTime.routeName: (ctx) => const DescriptionTime(),
+        },
         home: StreamBuilder(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
