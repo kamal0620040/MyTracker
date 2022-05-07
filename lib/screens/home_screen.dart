@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mytracker/provider/user_provider.dart';
+import 'package:mytracker/screens/Time/onboarding_page.dart';
 import 'package:mytracker/screens/Time/timer_app.dart';
 import 'package:mytracker/screens/nutrition_screen.dart';
 import 'package:provider/provider.dart';
@@ -33,17 +34,21 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void navigateToTime() {
-    // TODO:WIll be done later
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const TimerApp(),
       ),
     );
   }
+  // void navigateToTime() {
+  //   Navigator.of(context).push(
+  //     MaterialPageRoute(
+  //       builder: (context) => const OnBoardingPage(),
+  //     ),
+  //   );
+  // }
 
-  void navigateToExpense() {
-    // TODO:WIll be done later
-  }
+  void navigateToExpense() {}
 
   @override
   Widget build(BuildContext context) {

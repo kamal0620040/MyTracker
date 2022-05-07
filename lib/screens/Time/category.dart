@@ -8,41 +8,46 @@ final dummyCategories = [
     catId: 'c1',
     title: 'Productivity',
     color: Colors.purple,
+    icon: Icon(Icons.production_quantity_limits, size: 40, color: Colors.white),
   ),
   const CategoryTime(
-    catId: 'c2',
-    title: 'Entertainment',
-    color: Colors.red,
-  ),
+      catId: 'c2',
+      title: 'Entertainment',
+      color: Colors.red,
+      icon: Icon(Icons.fmd_good, size: 40, color: Colors.white)),
   const CategoryTime(
-    catId: 'c3',
-    title: 'Leisure',
-    color: Colors.orange,
-  ),
+      catId: 'c3',
+      title: 'Leisure',
+      color: Colors.orange,
+      icon: Icon(Icons.timelapse, size: 40, color: Colors.white)),
   const CategoryTime(
-    catId: 'c4',
-    title: 'Relaxation',
-    color: Colors.amber,
-  ),
+      catId: 'c4',
+      title: 'Relaxation',
+      color: Colors.amber,
+      icon: Icon(Icons.mediation_outlined, size: 40, color: Colors.white)),
   const CategoryTime(
     catId: 'c5',
-    title: 'Guilty Pleasure',
+    title: 'Arts',
     color: Colors.blue,
+    icon: Icon(Icons.piano_outlined, size: 40, color: Colors.white),
   ),
   const CategoryTime(
     catId: 'c6',
     title: 'Sports',
     color: Colors.green,
+    icon: Icon(Icons.sports_football, size: 40, color: Colors.white),
   ),
   const CategoryTime(
     catId: 'c7',
     title: 'Work Out',
     color: Colors.lightBlue,
+    icon: Icon(Icons.sports_gymnastics, size: 40, color: Colors.white),
   ),
   const CategoryTime(
     catId: 'c8',
     title: 'Others',
     color: Colors.teal,
+    icon: Icon(Icons.exit_to_app_rounded, size: 40, color: Colors.white),
   ),
 ];
 
@@ -50,7 +55,7 @@ class Category {
   final String catId;
   final String title;
   final Color color;
-  int see = 1;
+
   Category({required this.catId, required this.title, required this.color});
 
   String catidToTitle(String catid) {
@@ -71,8 +76,13 @@ class CategoryTime extends StatelessWidget {
   final String catId;
   final String title;
   final Color color;
+  final Icon icon;
   const CategoryTime(
-      {Key? key, required this.catId, required this.title, required this.color})
+      {Key? key,
+      required this.catId,
+      required this.title,
+      required this.color,
+      required this.icon})
       : super(key: key);
 
   void selectCategory(BuildContext ctx) {
@@ -96,9 +106,21 @@ class CategoryTime extends StatelessWidget {
       borderRadius: BorderRadius.circular(15),
       child: Container(
         padding: const EdgeInsets.all(15),
-        child: Text(
-          title,
-          style: Theme.of(context).textTheme.headline6,
+        child: Column(
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+              // style: Theme.of(context).textTheme.headline6,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            icon
+          ],
         ),
         decoration: BoxDecoration(
           gradient: LinearGradient(

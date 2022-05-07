@@ -13,7 +13,8 @@ class CategoryHome extends StatelessWidget {
             (catData) => CategoryTime(
                 catId: catData.catId,
                 title: catData.title,
-                color: catData.color),
+                color: catData.color,
+                icon: catData.icon),
           )
           .toList(),
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(

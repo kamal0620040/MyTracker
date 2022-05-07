@@ -20,8 +20,28 @@ class EventItem extends StatelessWidget {
     return Dismissible(
       direction: DismissDirection.endToStart,
       key: Key(event.id.toString()),
+      // confirmDismiss: (direction) async {
+      //   if (event.active) return false;
+      //   return true;
+      // },
       confirmDismiss: (direction) async {
-        if (event.active) return false;
+        if (event.active) {
+          final snackBar = SnackBar(
+            duration: const Duration(seconds: 2),
+            content: const Text(
+              'Cannot delete ACTIVE timer',
+              style: TextStyle(fontSize: 16),
+            ),
+            action: SnackBarAction(
+              label: 'Dismiss',
+              onPressed: () {},
+            ),
+          );
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(snackBar);
+          return false;
+        }
         return true;
       },
       onDismissed: (direction) {
@@ -38,7 +58,6 @@ class EventItem extends StatelessWidget {
       ),
       child: InkWell(
         onDoubleTap: () {
-          print(event.active);
           if (isActive && event.active) {
             context.read<TimerServices>().stop(event.startTime);
           } else {

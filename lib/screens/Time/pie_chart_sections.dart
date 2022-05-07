@@ -28,9 +28,11 @@ List<PieChartSectionData> getSections(
 
           final value = PieChartSectionData(
             color: cat.catidToColor(data),
-            value: pieSection.values.toList()[index] /
-                pieSection.values.toList().sum *
-                100,
+            value: pieSection.values.toList().sum == 0
+                ? 100
+                : pieSection.values.toList()[index] /
+                    pieSection.values.toList().sum *
+                    100,
             title: pieSection.values.toList()[index] /
                         pieSection.values.toList().sum *
                         100 >

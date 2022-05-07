@@ -20,31 +20,6 @@ class TimedEvent {
     this.isFavorite = false,
   });
 
-  static Map<String, dynamic> toMap(TimedEvent event) => {
-        'id': event.id,
-        'title': event.title,
-        'time': event.time,
-        'active': event.active,
-        'startTime': event.startTime,
-        'startTimePause': event.startTimePause,
-        'categoryTime': event.categoryTime,
-        'timeDesc': event.timeDesc,
-        'isFavorite': event.isFavorite,
-      };
-
-  factory TimedEvent.fromJson(jsonData) {
-    return TimedEvent(
-        id: jsonData['id'],
-        active: jsonData['active'],
-        startTime: jsonData['startTime'],
-        startTimePause: jsonData['startTimePause'],
-        title: jsonData['title'],
-        time: jsonData['time'],
-        categoryTime: jsonData['categoryTime'],
-        timeDesc: jsonData['timeDesc'],
-        isFavorite: jsonData['isFavorite']);
-  }
-
   TimedEvent copyWith({
     String? newTitle,
     bool? newActive,

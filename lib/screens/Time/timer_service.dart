@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'timed_event.dart';
 import 'helpers.dart';
 import 'package:mytracker/resources/firestore_methods.dart';
@@ -10,15 +8,13 @@ import 'package:mytracker/resources/firestore_methods.dart';
 class TimerServices with ChangeNotifier {
   int s = 0;
   List<TimedEvent> firefetch = [];
-  List<TimedEvent> dum = [];
   int timerone = 1;
   int initialloadtimer = 1;
   List<TimedEvent> _timedEvents = [];
-  String random = '';
-  List<TimedEvent> test = [];
+  String selectedCat = '';
   List<TimedEvent> get timedEvents {
     return _timedEvents
-        .where((element) => element.categoryTime == random)
+        .where((element) => element.categoryTime == selectedCat)
         .toList()
         .reversed
         .toList();
@@ -26,8 +22,8 @@ class TimerServices with ChangeNotifier {
 
   List<TimedEvent> get timedEventsFav {
     return _timedEvents
-        .where(
-            (element) => element.categoryTime == random && element.isFavorite)
+        .where((element) =>
+            element.categoryTime == selectedCat && element.isFavorite)
         .toList()
         .reversed
         .toList();
@@ -53,130 +49,51 @@ class TimerServices with ChangeNotifier {
     return '$hours:$minutes:$seconds';
   }
 
-  TimerServices() {
-    // void test() async {
-    //   final collRef = await FirebaseFirestore.instance
-    //       .collection("timePost")
-    //       .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
-    //       .collection("Time")
-    //       .get();
-    //   collRef.docs.forEach((e) {
-    //     firefetch.add(TimedEvent(
-    //         id: e['id'],
-    //         active: e['active'],
-    //         startTime: e['startTime'],
-    //         startTimePause: e['startTimePause'],
-    //         title: e['title'],
-    //         time: e['time'],
-    //         categoryTime: e['categoryTime'],
-    //         timeDesc: e['timeDesc']));
-    //   });
-    // }
+  TimerServices();
 
-    // dum = firefetch;
-    // test();
-  }
-
-  void save() {
-    String data = jsonEncode(
-        _timedEvents.map((event) => TimedEvent.toMap(event)).toList());
-    SharedPreferences.getInstance().then((prefs) {
-      prefs.setString('events', data);
-    });
-  }
-
-  void load(String catId) {
+  void load(String catId) async {
     firefetch = [];
-    // print(cat_id);
-    // int s = int.parse(z);
-    SharedPreferences.getInstance().then((prefs) async {
-      if (prefs.containsKey('events')) {
-        String data = prefs.getString('events')!;
-        var x = jsonDecode(data);
 
-        // _timedEvents =  jsonDecode(data)
-        //     .map<TimedEvent>((item) => TimedEvent.fromJson(item))
-        //     .toList();
+    selectedCat = catId;
 
-        List<TimedEvent> z = x.map<TimedEvent>((item) {
-          // if (x[0]['titlem'] == '1') {
-          return TimedEvent.fromJson(item);
-        }).toList();
-        _timedEvents = z;
-        random = catId;
-        // test = _timedEvents;
-        // print(z);
-        // _timedEvents =
-        //     z.where((element) => element.categoryTime == cat_id).toList();
-        // print(x[0]['title'].runtimeType);
-        // print(_timedEvents[0].title);
-        // print(x);
-        // if (timerActive) {
-        //   DateTime startTime = DateTime.parse(activeEvent.startTime);
-        //   _seconds = DateTime.now().difference(startTime).inSeconds;
-        //   // s = (s + 1);
-
-        //   startTimer(1);
-        // }
-        final collRef = await FirebaseFirestore.instance
-            .collection("timePost")
-            .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
-            .collection("Time")
-            .get();
-        collRef.docs.forEach((e) {
-          firefetch.add(TimedEvent(
-              id: e['id'],
-              active: e['active'],
-              startTime: e['startTime'],
-              startTimePause: e['startTimePause'],
-              title: e['title'],
-              time: e['time'],
-              categoryTime: e['categoryTime'],
-              timeDesc: e['timeDesc']));
-        });
-        _timedEvents = firefetch;
-
-        // print(_timedEvents[0].id);
-        if (timerActive) {
-          if (initialloadtimer == 1) {
-            timerone = 1;
-            initialloadtimer++;
-          } else {
-            timerone++;
-          }
-          if (timerone == 1) {
-            // print('FUCK${activeEvent.time}');
-            DateTime startTimePause =
-                DateTime.parse(activeEvent.startTimePause);
-            // _seconds = DateTime.now().difference(startTime).inSeconds;
-            // _seconds = int.parse(activeEvent.time);
-            // s = (s + 1);
-
-            // print(activeEvent.startTime);
-            // print(startTime);
-
-            // print(wwe);
-            // print(activeEvent.time);
-            int helper = int.parse(activeEvent.time.substring(0, 2)) * 60 +
-                int.parse(activeEvent.time.substring(3, 5)) * 60 +
-                int.parse(activeEvent.time.substring(6, 8));
-            // _seconds = helper + helpernow - helper;
-            _seconds =
-                helper + DateTime.now().difference(startTimePause).inSeconds;
-            // print(helper);
-            // print(activeEvent.time);
-            // print(activeEvent.startTime);
-            // print(activeEvent.startTimePause);
-            // _seconds = helper;
-            // DateTime.now().difference(startTime).inSeconds;
-
-            startTimer();
-            // delete('id');
-          }
-        }
-        notifyListeners();
-      }
+    final collRef = await FirebaseFirestore.instance
+        .collection("timePost")
+        .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
+        .collection("Time")
+        .get();
+    collRef.docs.forEach((e) {
+      firefetch.add(TimedEvent(
+          id: e['id'],
+          active: e['active'],
+          startTime: e['startTime'],
+          startTimePause: e['startTimePause'],
+          title: e['title'],
+          time: e['time'],
+          categoryTime: e['categoryTime'],
+          timeDesc: e['timeDesc'],
+          isFavorite: e['isFavorite']));
     });
+    _timedEvents = firefetch;
+
+    if (timerActive) {
+      if (initialloadtimer == 1) {
+        timerone = 1;
+        initialloadtimer++;
+      } else {
+        timerone++;
+      }
+      if (timerone == 1) {
+        DateTime startTimePause = DateTime.parse(activeEvent.startTimePause);
+
+        int helper = int.parse(activeEvent.time.substring(0, 2)) * 60 +
+            int.parse(activeEvent.time.substring(3, 5)) * 60 +
+            int.parse(activeEvent.time.substring(6, 8));
+        _seconds = helper + DateTime.now().difference(startTimePause).inSeconds;
+
+        startTimer();
+      }
+    }
+    notifyListeners();
   }
 
   void addNew(String catId, BuildContext context, String uid) async {
@@ -228,57 +145,8 @@ class TimerServices with ChangeNotifier {
     _timedEvents.add(newEvent);
     notifyListeners();
     _seconds = 0;
-    // print(newEvent.id);
     startTimer();
-    // print(newEvent.id);
-    // print(newEvent.startTime);
-    // void temp() async {
-    // final collRef = await FirebaseFirestore.instance
-    //     .collection("timePost")
-    //     .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
-    //     .collection("Time")
-    //     .get();
-    // collRef.docs.map((e) => {print(e.data())});
-    // }
-// ssssssssssssssssssssssssssssssssssssss
-    // List<TimedEvent> temp = [];
-    // List<TimedEvent> fuck = collRef.docs.map<TimedEvent>((item) {
-    //   return TimedEvent.fromJson(item);
-    // }).toList();
 
-    // collRef.docs.forEach((e) {
-
-    //   temp.add(e.data);
-    // });
-// ssssssssssssssssssssssssssssssssssssss
-    // temp();
-    // print(collRef.docs[0].data());
-    // print(collRef.docs[0].data().runtimeType);
-    // print(collRef.docs[0].data());
-    // collRef.docs.forEach((e) {
-    //   firefetch.add(TimedEvent(
-    //       id: e['id'],
-    //       active: e['active'],
-    //       startTime: e['startTime'],
-    //       startTimePause: e['startTimePause'],
-    //       title: e['title'],
-    //       time: e['time'],
-    //       categoryTime: e['categoryTime'],
-    //       timeDesc: e['timeDesc']));
-    // });
-    // print(collRef.docs[0]['title']);
-    // print(collRef.docs[0]['startTime']);
-    // print(collRef.docs[0]['id']);
-    // print(collRef.docs[0]['active']);
-    // print(collRef.docs[0]['startTimePause']);
-    // print(collRef.docs[0]['time']);
-    // print(collRef.docs[0]['categoryTime']);
-    // print(collRef.docs[0]['timeDesc']);
-    // print(_timedEvents);
-    // print(firefetch);
-    // _timedEvents = firefetch;
-    // print(firefetch[0]);
-    save();
     load(catId);
   }
 
@@ -297,7 +165,6 @@ class TimerServices with ChangeNotifier {
     String? t = _timedEvents.firstWhere((e) {
       return e.startTime == id;
     }).id;
-    print(t);
     FirebaseFirestore.instance
         .collection("timePost")
         .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
@@ -311,7 +178,6 @@ class TimerServices with ChangeNotifier {
     );
     int currentIndex = _timedEvents.indexWhere((element) => element.active);
     _timedEvents[currentIndex] = event;
-    save();
     notifyListeners();
   }
 
@@ -319,17 +185,7 @@ class TimerServices with ChangeNotifier {
     String? t = _timedEvents.firstWhere((e) {
       return e.startTime == idm;
     }).id;
-    print(t);
-    print('ssssssssssssssss');
-    print(_timedEvents[0].id);
 
-    // print(FirebaseFirestore.instance
-    //     .collection("timePost")
-    //     .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
-    //     .collection("Time")
-    //     .doc()
-    //     .get());
-    // print(id);
     FirebaseFirestore.instance
         .collection("timePost")
         .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
@@ -341,14 +197,12 @@ class TimerServices with ChangeNotifier {
     // .removeWhere((element) => element.id == id);
     // _timedEvents = [];
     notifyListeners();
-    save();
   }
 
   void edit(String id, String title) {
     String? t = _timedEvents.firstWhere((e) {
       return e.startTime == id;
     }).id;
-    print(t);
     FirebaseFirestore.instance
         .collection("timePost")
         .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
@@ -362,14 +216,12 @@ class TimerServices with ChangeNotifier {
     int index = _timedEvents.indexWhere((element) => element.id == t);
     _timedEvents[index] = updatedEvent;
     notifyListeners();
-    save();
   }
 
   void editDesc(String id, String description) {
     String? t = _timedEvents.firstWhere((e) {
       return e.startTime == id;
     }).id;
-    print(t);
     FirebaseFirestore.instance
         .collection("timePost")
         .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
@@ -384,7 +236,6 @@ class TimerServices with ChangeNotifier {
     _timedEvents[index] = updatedEvent;
 
     notifyListeners();
-    save();
   }
 
   void editFav(String id) {
@@ -408,7 +259,6 @@ class TimerServices with ChangeNotifier {
         .doc(tm)
         .update({'isFavorite': t});
     notifyListeners();
-    save();
   }
 
   void editTime(String id, String time, BuildContext context) {
@@ -433,7 +283,6 @@ class TimerServices with ChangeNotifier {
     String? t = _timedEvents.firstWhere((e) {
       return e.startTime == id;
     }).id;
-    print(t);
     FirebaseFirestore.instance
         .collection("timePost")
         .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
@@ -457,7 +306,6 @@ class TimerServices with ChangeNotifier {
         int.parse(time.substring(6, 8));
 
     startTimer();
-    save();
   }
 
   int timeToseconds(String time) {

@@ -35,16 +35,16 @@ class _EventListState extends State<EventList> {
     List<TimedEvent> timedEvents = timerServices.timedEvents;
     List<TimedEvent> timedEventsFav = timerServices.timedEventsFav;
 
-    return ScaffoldMessenger(
-      child: Builder(
-        builder: (context) => Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            title: Text(title!),
-          ),
-          body: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            // color: Colors.white,
+    return Builder(
+      builder: (context) => Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text(title!),
+        ),
+        body: Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          // color: Colors.white,
+          child: SingleChildScrollView(
             child: Column(
               children: [
                 Stack(
@@ -86,20 +86,47 @@ class _EventListState extends State<EventList> {
                     ),
                   ],
                 ),
-                SingleChildScrollView(
-                  child: ListView.separated(
-                      shrinkWrap: true,
-                      separatorBuilder: (context, index) => const Divider(
-                            height: 1,
+                timedEvents.length == 0
+                    ? Column(
+                        children: [
+                          SizedBox(
+                            height: 30,
                           ),
-                      itemCount:
-                          fav ? timedEventsFav.length : timedEvents.length,
-                      itemBuilder: (context, index) {
-                        return fav
-                            ? EventItem(event: timedEventsFav[index])
-                            : EventItem(event: timedEvents[index]);
-                      }),
-                ),
+                          Text(
+                            'No Timer at the moment!',
+                            style: TextStyle(fontSize: 28),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Icon(
+                            Icons.timer_outlined,
+                            size: 80,
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            'Try adding some Timer!!',
+                            style: TextStyle(fontSize: 20),
+                          )
+                        ],
+                      )
+                    : SingleChildScrollView(
+                        child: ListView.separated(
+                            shrinkWrap: true,
+                            separatorBuilder: (context, index) => const Divider(
+                                  height: 1,
+                                ),
+                            itemCount: fav
+                                ? timedEventsFav.length
+                                : timedEvents.length,
+                            itemBuilder: (context, index) {
+                              return fav
+                                  ? EventItem(event: timedEventsFav[index])
+                                  : EventItem(event: timedEvents[index]);
+                            }),
+                      ),
               ],
             ),
           ),

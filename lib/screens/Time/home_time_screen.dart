@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mytracker/screens/Time/pie_chart_sections.dart';
 
 import 'category.dart';
 
@@ -12,9 +13,11 @@ class CategoryHome extends StatelessWidget {
       children: dummyCategories
           .map(
             (catData) => CategoryTime(
-                catId: catData.catId,
-                title: catData.title,
-                color: catData.color),
+              catId: catData.catId,
+              title: catData.title,
+              color: catData.color,
+              icon: catData.icon,
+            ),
           )
           .toList(),
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(

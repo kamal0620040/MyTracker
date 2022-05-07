@@ -40,12 +40,33 @@ class _PieChartTimeState extends State<PieChartTime> {
       }
     }
     return pieSectionList.isEmpty
-        ? const Center(
-            child: Text(
-            'NO STATS TO SHOW AT THE MOMENT!!',
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30, color: Colors.green),
-          ))
+        ? Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 30,
+                ),
+                Text(
+                  'No Stats at the moment!',
+                  style: TextStyle(fontSize: 28),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Icon(
+                  Icons.auto_graph_outlined,
+                  size: 80,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Text(
+                  'Try adding some Timer!!',
+                  style: TextStyle(fontSize: 20),
+                )
+              ],
+            ),
+          )
         : SingleChildScrollView(
             child: Card(
               // color: Colors.white,

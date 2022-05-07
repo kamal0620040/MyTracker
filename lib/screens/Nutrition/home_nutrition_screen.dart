@@ -79,7 +79,6 @@ class _HomeNutritionState extends State<HomeNutrition> {
     //and this gives you the first millisecond of the next day
     var endOfTheDay = startOfTheDay.add(Duration(days: 1));
 
-    final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
