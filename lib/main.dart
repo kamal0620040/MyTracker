@@ -6,6 +6,7 @@ import 'package:mytracker/provider/theme_provider.dart';
 import 'package:mytracker/provider/user_provider.dart';
 import 'package:mytracker/screens/Time/description_time.dart';
 import 'package:mytracker/screens/Time/event_list.dart';
+import 'package:mytracker/screens/Time/onboarding_page.dart';
 import 'package:mytracker/screens/Time/timer_app.dart';
 import 'package:mytracker/screens/Time/timer_service.dart';
 import 'package:mytracker/screens/home_screen.dart';
@@ -84,7 +85,7 @@ class MyApp extends StatelessWidget {
                   ),
                 );
               }
-              return const LoginScreen();
+              return const OnBoardingPage();
             }),
       ),
     );

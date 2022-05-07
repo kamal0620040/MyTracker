@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mytracker/screens/login_screen.dart';
 import 'timer_app.dart';
 
 class OnBoardingPage extends StatelessWidget {
@@ -59,7 +60,12 @@ class OnBoardingPage extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           onDone: () {
-            Navigator.of(context).pushNamed(TimerApp.routeName);
+            Navigator.pushReplacement<void, void>(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => const LoginScreen(),
+              ),
+            );
           },
           dotsDecorator: getDotDecoration(),
           showNextButton: true,
