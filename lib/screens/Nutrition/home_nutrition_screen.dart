@@ -18,6 +18,7 @@ class HomeNutrition extends StatefulWidget {
 
 class _HomeNutritionState extends State<HomeNutrition> {
   bool _isLoading = false;
+  Map<String, dynamic>? goalData;
   List<String> datelist = [
     'Jan',
     'Feb',
@@ -32,12 +33,50 @@ class _HomeNutritionState extends State<HomeNutrition> {
     'Nov',
     'Dec',
   ];
+
+  List<String> fullDateList = [
+    '',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
   DateTime now = DateTime.now();
 
   int? fat = 0;
   int? carbs = 0;
   int? protein = 0;
   int? energy = 0;
+
+  Future<bool> checkIfDocExists(String docId) async {
+    try {
+      // Get reference to Firestore collection
+      var collectionRef =
+          FirebaseFirestore.instance.collection('nutritionGoal');
+
+      var doc = await collectionRef.doc(docId).get();
+      return doc.exists;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  getData(String docId) async {
+    var collectionRef = FirebaseFirestore.instance.collection('nutritionGoal');
+
+    var doc = await collectionRef.doc(docId).get();
+    goalData = Map.from(doc.data()!);
+    // print(doc.data());
+    return doc.data();
+  }
 
   void initial(String uid) async {
     FirebaseFirestore.instance
@@ -136,58 +175,176 @@ class _HomeNutritionState extends State<HomeNutrition> {
                 SizedBox(
                   height: 10,
                 ),
-                Container(
-                  child: Column(children: [
-                    Row(
-                      children: [
-                        _RadialProgress(
-                          width: width * 0.4,
-                          height: width * 0.4,
-                          energyValue: energy,
-                          progress:
-                              (energy as num) / 1000, // 1000 is target value
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _IngredientProgress(
-                              ingredient: "Protein",
-                              progress: (protein as int) /
-                                  300, // 300 is protein target value
-                              progressColor: Colors.redAccent,
-                              leftAmount: 300 - (protein as int),
-                              width: width * 0.28,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            _IngredientProgress(
-                              ingredient: "Carbs",
-                              progress: (carbs as num) / 200,
-                              progressColor: Colors.deepPurpleAccent,
-                              leftAmount: 200 - (carbs as int),
-                              width: width * 0.28,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            _IngredientProgress(
-                              ingredient: "Fats",
-                              progress: (fat as num) / 200,
-                              progressColor: Colors.teal,
-                              leftAmount: 100 - (fat as int),
-                              width: width * 0.28,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ]),
+                FutureBuilder(
+                  future: checkIfDocExists(user.uid),
+                  builder: ((context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    // return Text(snapshot.data.toString());
+                    if (snapshot.data == false) {
+                      return Text("No Data");
+                    } else {
+                      // return Container(
+                      //   child: Column(children: [
+                      //     Row(
+                      //       children: [
+                      //         _RadialProgress(
+                      //           width: width * 0.4,
+                      //           height: width * 0.4,
+                      //           energyValue: energy,
+                      //           progress: (energy as num) /
+                      //               1000, // 1000 is target value
+                      //         ),
+                      //         SizedBox(
+                      //           width: 10,
+                      //         ),
+                      //         Column(
+                      //           mainAxisAlignment:
+                      //               MainAxisAlignment.spaceBetween,
+                      //           mainAxisSize: MainAxisSize.max,
+                      //           crossAxisAlignment: CrossAxisAlignment.start,
+                      //           children: [
+                      //             _IngredientProgress(
+                      //               ingredient: "Protein",
+                      //               progress: (protein as int) /
+                      //                   300, // 300 is protein target value
+                      //               progressColor: Colors.redAccent,
+                      //               leftAmount: 300 - (protein as int),
+                      //               width: width * 0.28,
+                      //             ),
+                      //             SizedBox(
+                      //               height: 10,
+                      //             ),
+                      //             _IngredientProgress(
+                      //               ingredient: "Carbs",
+                      //               progress: (carbs as num) / 200,
+                      //               progressColor: Colors.deepPurpleAccent,
+                      //               leftAmount: 200 - (carbs as int),
+                      //               width: width * 0.28,
+                      //             ),
+                      //             SizedBox(
+                      //               height: 10,
+                      //             ),
+                      //             _IngredientProgress(
+                      //               ingredient: "Fats",
+                      //               progress: (fat as num) / 200,
+                      //               progressColor: Colors.teal,
+                      //               leftAmount: 100 - (fat as int),
+                      //               width: width * 0.28,
+                      //             ),
+                      //           ],
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ]),
+                      // );
+
+                      return FutureBuilder(
+                          future: getData(user.uid),
+                          builder: ((context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return Container(
+                              // margin: EdgeInsets.fromLTRB(10, 8, 0, 8),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: Color.fromRGBO(87, 87, 87, 1),
+                                ),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5),
+                                ),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 16),
+                              child: Column(children: [
+                                Text(
+                                  '${fullDateList[DateTime.now().month]} month status :',
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 22,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    _RadialProgress(
+                                      width: width * 0.32,
+                                      height: width * 0.32,
+                                      energyValue: energy,
+                                      energyGoal: goalData!["energy"].ceil(),
+                                      progress: (energy as num) /
+                                          goalData![
+                                              "energy"], // 1000 is target value
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        _IngredientProgress(
+                                          ingredient: "Protein",
+                                          progress: (protein as int) /
+                                              goalData![
+                                                  "protein"], // 300 is protein target value
+                                          progressColor: Colors.redAccent,
+                                          leftAmount:
+                                              goalData!["protein"].ceil() -
+                                                  (protein as int),
+                                          width: width * 0.20,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        _IngredientProgress(
+                                          ingredient: "Carbs",
+                                          progress: (carbs as num) /
+                                              goalData!["carbs"],
+                                          progressColor:
+                                              Colors.deepPurpleAccent,
+                                          leftAmount:
+                                              goalData!["carbs"].ceil() -
+                                                  (carbs as int),
+                                          width: width * 0.20,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        _IngredientProgress(
+                                          ingredient: "Fats",
+                                          progress:
+                                              (fat as num) / goalData!["carbs"],
+                                          progressColor: Colors.teal,
+                                          leftAmount:
+                                              goalData!["carbs"].ceil() -
+                                                  (fat as int),
+                                          width: width * 0.20, // 0.28 initially
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ]),
+                            );
+                          }));
+                    }
+                  }),
                 ),
                 SizedBox(
                   height: 25,
@@ -502,7 +659,7 @@ class _IngredientProgress extends StatelessWidget {
                 ),
                 Container(
                   height: 10,
-                  width: width! * progress!,
+                  width: leftAmount! < 0 ? width! * 1 : width! * progress!,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(
                         Radius.circular(5),
@@ -514,7 +671,12 @@ class _IngredientProgress extends StatelessWidget {
             SizedBox(
               width: 5,
             ),
-            Text('${leftAmount}g left')
+            leftAmount! > 0
+                ? Text('${leftAmount}g left')
+                : Text(
+                    '${leftAmount}g left',
+                    style: TextStyle(color: Color.fromARGB(255, 244, 87, 76)),
+                  )
           ],
         )
       ],
@@ -526,15 +688,22 @@ class _RadialProgress extends StatelessWidget {
   final width;
   final height;
   final energyValue;
+  final energyGoal;
   final progress;
   const _RadialProgress(
-      {Key? key, this.width, this.height, this.energyValue, this.progress})
+      {Key? key,
+      this.width,
+      this.height,
+      this.energyValue,
+      this.energyGoal,
+      this.progress})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: _RadialPainter(progress: progress),
+      painter: _RadialPainter(
+          progress: progress, energyGoal: energyGoal, energyValue: energyValue),
       child: Container(
         height: height,
         width: width,
@@ -544,7 +713,9 @@ class _RadialProgress extends StatelessWidget {
             text: TextSpan(
               children: [
                 TextSpan(
-                  text: (1000 - energyValue).toString(),
+                  text: energyGoal < energyValue
+                      ? ((energyGoal - energyValue) * -1).toString()
+                      : (energyGoal - energyValue).toString(),
                   style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
                         fontSize: 32, fontWeight: FontWeight.w700),
@@ -552,7 +723,7 @@ class _RadialProgress extends StatelessWidget {
                 ),
                 TextSpan(text: "\n"),
                 TextSpan(
-                  text: "kcal left",
+                  text: energyGoal < energyValue ? "kcal exceed" : "kcal left",
                   style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
                         fontSize: 14, fontWeight: FontWeight.w500),
@@ -569,14 +740,16 @@ class _RadialProgress extends StatelessWidget {
 
 class _RadialPainter extends CustomPainter {
   final double? progress;
+  final energyValue;
+  final energyGoal;
 
-  _RadialPainter({this.progress});
+  _RadialPainter({this.progress, this.energyValue, this.energyGoal});
 
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()
       ..strokeWidth = 10
-      ..color = Colors.blue
+      ..color = energyGoal < energyValue ? Colors.redAccent : Colors.blue
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
