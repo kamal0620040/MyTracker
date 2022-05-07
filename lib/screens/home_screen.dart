@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mytracker/models/users.dart';
 import 'package:mytracker/provider/user_provider.dart';
 import 'package:mytracker/resources/auth_methods.dart';
+import 'package:mytracker/screens/Crypto/pages/HomePage.dart';
 import 'package:mytracker/screens/login_screen.dart';
 import 'package:mytracker/screens/Time/onboarding_page.dart';
 import 'package:mytracker/screens/Time/timer_app.dart';
@@ -54,9 +55,17 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
 
   void navigateToExpense() {
-  Navigator.of(context).push(
+    Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const CategoryHome(),
+      ),
+    );
+  }
+
+  void navigateToCrypto() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const HomePage(),
       ),
     );
   }
@@ -183,6 +192,34 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Container(
                 child: Text(
                   "Nutrition",
+                  style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+                width: double.infinity,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                decoration: const ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(4),
+                    ),
+                  ),
+                  color: Color.fromRGBO(101, 146, 233, 1),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            InkWell(
+              onTap: navigateToCrypto,
+              child: Container(
+                child: Text(
+                  "Crypto Tracket",
                   style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
                       fontWeight: FontWeight.w600,

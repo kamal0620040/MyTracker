@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mytracker/provider/theme_provider.dart';
 import 'package:mytracker/provider/user_provider.dart';
+import 'package:mytracker/screens/Crypto/models/LocalStorage.dart';
+import 'package:mytracker/screens/Crypto/providers/market_provider.dart';
 import 'package:mytracker/screens/Time/description_time.dart';
 import 'package:mytracker/screens/Time/event_list.dart';
 import 'package:mytracker/screens/Time/onboarding_page.dart';
@@ -16,12 +18,16 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  String currentTheme = await LocalStorage.getTheme() ?? "light";
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(MyApp(
+    theme: currentTheme,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String theme;
+  const MyApp({Key? key, required this.theme}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -40,6 +46,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => UserProvider(),
         ),
+        ChangeNotifierProvider<MarketProvider>(
+          create: (context) => MarketProvider(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -47,20 +56,6 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.system,
         theme: MyThemes.lightTheme,
         darkTheme: MyThemes.darkTheme,
-        // home: const SafeArea(
-        //   child: Scaffold(
-        //     // appBar: AppBar(
-        //     //   title: const Text("Temporary"),
-        //     //   backgroundColor: Colors.green,
-        //     // ),
-        //     body: Center(
-        //       child: Text("Here, we go..."),
-        //     ),
-        //   ),
-        // ),
-        // home: const LoginScreen(),
-        // home: const TimerApp(),
-
         routes: {
           TimerApp.routeName: (ctx) => const TimerApp(),
           EventList.routeName: (ctx) => const EventList(),
