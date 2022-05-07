@@ -146,8 +146,23 @@ class TimerServices with ChangeNotifier {
     notifyListeners();
     _seconds = 0;
     startTimer();
-
+    final snackBar = SnackBar(
+      duration: const Duration(seconds: 2),
+      content: const Text(
+        'New Timer Posted',
+        style: TextStyle(fontSize: 16),
+      ),
+      action: SnackBarAction(
+        label: 'Dismiss',
+        onPressed: () {},
+      ),
+    );
     load(catId, uid);
+
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(snackBar);
+    return;
   }
 
   void startTimer() {
@@ -194,6 +209,7 @@ class TimerServices with ChangeNotifier {
         .delete();
     _timedEvents
         .removeWhere((element) => element.id == t && element.active == false);
+
     // .removeWhere((element) => element.id == id);
     // _timedEvents = [];
     notifyListeners();
