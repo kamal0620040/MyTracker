@@ -23,10 +23,6 @@ class EventItem extends StatelessWidget {
     return Dismissible(
       direction: DismissDirection.endToStart,
       key: Key(event.id.toString()),
-      // confirmDismiss: (direction) async {
-      //   if (event.active) return false;
-      //   return true;
-      // },
       confirmDismiss: (direction) async {
         if (event.active) {
           final snackBar = SnackBar(

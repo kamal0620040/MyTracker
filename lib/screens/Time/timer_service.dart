@@ -6,7 +6,6 @@ import 'helpers.dart';
 import 'package:mytracker/resources/firestore_methods.dart';
 
 class TimerServices with ChangeNotifier {
-  int s = 0;
   List<TimedEvent> firefetch = [];
   int timerone = 1;
   int initialloadtimer = 1;
@@ -85,7 +84,7 @@ class TimerServices with ChangeNotifier {
       if (timerone == 1) {
         DateTime startTimePause = DateTime.parse(activeEvent.startTimePause);
 
-        int helper = int.parse(activeEvent.time.substring(0, 2)) * 60 +
+        int helper = int.parse(activeEvent.time.substring(0, 2)) * 3600 +
             int.parse(activeEvent.time.substring(3, 5)) * 60 +
             int.parse(activeEvent.time.substring(6, 8));
         _seconds = helper + DateTime.now().difference(startTimePause).inSeconds;
@@ -317,7 +316,7 @@ class TimerServices with ChangeNotifier {
     int index = _timedEvents.indexWhere((element) => element.id == t);
     _timedEvents[index] = updatedEvent;
     notifyListeners();
-    _seconds = int.parse(time.substring(0, 2)) * 60 +
+    _seconds = int.parse(time.substring(0, 2)) * 3600 +
         int.parse(time.substring(3, 5)) * 60 +
         int.parse(time.substring(6, 8));
 
@@ -325,7 +324,7 @@ class TimerServices with ChangeNotifier {
   }
 
   int timeToseconds(String time) {
-    return int.parse(time.substring(0, 2)) * 60 +
+    return int.parse(time.substring(0, 2)) * 3600 +
         int.parse(time.substring(3, 5)) * 60 +
         int.parse(time.substring(6, 8));
   }
