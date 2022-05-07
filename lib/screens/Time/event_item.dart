@@ -44,8 +44,24 @@ class EventItem extends StatelessWidget {
             ..hideCurrentSnackBar()
             ..showSnackBar(snackBar);
           return false;
+        } else {
+          final snackBar = SnackBar(
+            duration: const Duration(seconds: 2),
+            content: const Text(
+              'Selected Timer Deleted',
+              style: TextStyle(fontSize: 16),
+            ),
+            action: SnackBarAction(
+              label: 'Dismiss',
+              onPressed: () {},
+            ),
+          );
+
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(snackBar);
+          return true;
         }
-        return true;
       },
       onDismissed: (direction) {
         context.read<TimerServices>().delete(event.startTime, user.uid);
