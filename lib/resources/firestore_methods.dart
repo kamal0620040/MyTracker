@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mytracker/models/goal.dart';
 import 'package:mytracker/models/monthly.dart';
 import 'package:mytracker/models/post_nutrition.dart';
 import 'package:uuid/uuid.dart';
@@ -32,6 +33,31 @@ class FireStoreMethods {
           .doc(currentMonth)
           .set(
             month.toJson(),
+          );
+      res = "success";
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  Future<String> uploadGoal(
+    String uid,
+    double protein,
+    double energy,
+    double fats,
+    double carbs,
+  ) async {
+    String res = "Some error occured.";
+    try {
+      NutritionGoal nutritionGoal = NutritionGoal(
+        protein: protein,
+        energy: energy,
+        fats: fats,
+        carbs: carbs,
+      );
+      _firestore.collection("nutritionGoal").doc(uid).set(
+            nutritionGoal.toJson(),
           );
       res = "success";
     } catch (err) {
