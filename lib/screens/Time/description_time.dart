@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../models/users.dart';
+import '../../provider/user_provider.dart';
 import 'timed_event.dart';
 import 'package:provider/provider.dart';
 import 'timer_service.dart';
@@ -12,6 +14,8 @@ class DescriptionTime extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    User user = Provider.of<UserProvider>(context).getUser;
+
     final cat = Category(catId: 'c1', title: 'title', color: Colors.red);
     final routeArgs =
         ModalRoute.of(context)?.settings.arguments as Map<String, TimedEvent>;
@@ -43,7 +47,7 @@ class DescriptionTime extends StatelessWidget {
                 if (result != null) {
                   context
                       .read<TimerServices>()
-                      .editDesc(event.startTime, result);
+                      .editDesc(event.startTime, result, user.uid);
                 }
               },
               icon: const Icon(Icons.edit)),

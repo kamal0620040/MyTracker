@@ -1,3 +1,5 @@
+import '../../models/users.dart';
+import '../../provider/user_provider.dart';
 import 'timer_service.dart';
 import 'package:flutter/material.dart';
 import 'event_list.dart';
@@ -94,11 +96,12 @@ class CategoryTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User user = Provider.of<UserProvider>(context).getUser;
     TimerServices timerServices = context.watch<TimerServices>();
     return InkWell(
       onTap: () {
         TimerServices();
-        timerServices.load(catId);
+        timerServices.load(catId, user.uid);
         Navigator.of(context).pushNamed(EventList.routeName,
             arguments: {'catId': catId, 'title': title});
       },

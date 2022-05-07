@@ -51,14 +51,14 @@ class TimerServices with ChangeNotifier {
 
   TimerServices();
 
-  void load(String catId) async {
+  void load(String catId, String uid) async {
     firefetch = [];
 
     selectedCat = catId;
 
     final collRef = await FirebaseFirestore.instance
         .collection("timePost")
-        .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
+        .doc(uid)
         .collection("Time")
         .get();
     collRef.docs.forEach((e) {
@@ -147,7 +147,7 @@ class TimerServices with ChangeNotifier {
     _seconds = 0;
     startTimer();
 
-    load(catId);
+    load(catId, uid);
   }
 
   void startTimer() {
@@ -157,7 +157,7 @@ class TimerServices with ChangeNotifier {
     });
   }
 
-  void stop(String id) {
+  void stop(String id, String uid) {
     if (timer != null && !timer!.isActive) return;
 
     timer!.cancel();
@@ -167,7 +167,7 @@ class TimerServices with ChangeNotifier {
     }).id;
     FirebaseFirestore.instance
         .collection("timePost")
-        .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
+        .doc(uid)
         .collection("Time")
         .doc(t)
         .update({'active': false, 'time': currentTime});
@@ -181,14 +181,14 @@ class TimerServices with ChangeNotifier {
     notifyListeners();
   }
 
-  void delete(String idm) {
+  void delete(String idm, String uid) {
     String? t = _timedEvents.firstWhere((e) {
       return e.startTime == idm;
     }).id;
 
     FirebaseFirestore.instance
         .collection("timePost")
-        .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
+        .doc(uid)
         .collection("Time")
         .doc(t)
         .delete();
@@ -199,13 +199,13 @@ class TimerServices with ChangeNotifier {
     notifyListeners();
   }
 
-  void edit(String id, String title) {
+  void edit(String id, String title, String uid) {
     String? t = _timedEvents.firstWhere((e) {
       return e.startTime == id;
     }).id;
     FirebaseFirestore.instance
         .collection("timePost")
-        .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
+        .doc(uid)
         .collection("Time")
         .doc(t)
         .update({'title': title});
@@ -218,13 +218,13 @@ class TimerServices with ChangeNotifier {
     notifyListeners();
   }
 
-  void editDesc(String id, String description) {
+  void editDesc(String id, String description, String uid) {
     String? t = _timedEvents.firstWhere((e) {
       return e.startTime == id;
     }).id;
     FirebaseFirestore.instance
         .collection("timePost")
-        .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
+        .doc(uid)
         .collection("Time")
         .doc(t)
         .update({'timeDesc': description});
@@ -238,7 +238,7 @@ class TimerServices with ChangeNotifier {
     notifyListeners();
   }
 
-  void editFav(String id) {
+  void editFav(String id, String uid) {
     bool t = false;
 
     String? tm = _timedEvents.firstWhere((e) {
@@ -254,14 +254,14 @@ class TimerServices with ChangeNotifier {
 
     FirebaseFirestore.instance
         .collection("timePost")
-        .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
+        .doc(uid)
         .collection("Time")
         .doc(tm)
         .update({'isFavorite': t});
     notifyListeners();
   }
 
-  void editTime(String id, String time, BuildContext context) {
+  void editTime(String id, String time, BuildContext context, String uid) {
     if (timerActive) {
       final snackBar = SnackBar(
         duration: const Duration(seconds: 2),
@@ -285,7 +285,7 @@ class TimerServices with ChangeNotifier {
     }).id;
     FirebaseFirestore.instance
         .collection("timePost")
-        .doc("1p1TxFvQLoXxlPmIoTj6pVoLDPH2")
+        .doc(uid)
         .collection("Time")
         .doc(t)
         .update({'active': true, 'time': time, 'startTimePause': startTime});

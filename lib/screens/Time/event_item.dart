@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../models/users.dart';
+import '../../provider/user_provider.dart';
 import 'timed_event.dart';
 import 'timer_service.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +16,7 @@ class EventItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User user = Provider.of<UserProvider>(context).getUser;
     final bool isActive = context.watch<TimerServices>().timerActive;
     TimerServices timerServices = context.watch<TimerServices>();
     TextEditingController _controller = TextEditingController();
@@ -45,7 +48,7 @@ class EventItem extends StatelessWidget {
         return true;
       },
       onDismissed: (direction) {
-        context.read<TimerServices>().delete(event.startTime);
+        context.read<TimerServices>().delete(event.startTime, user.uid);
       },
       background: Container(
         alignment: Alignment.centerRight,
@@ -59,11 +62,11 @@ class EventItem extends StatelessWidget {
       child: InkWell(
         onDoubleTap: () {
           if (isActive && event.active) {
-            context.read<TimerServices>().stop(event.startTime);
+            context.read<TimerServices>().stop(event.startTime, user.uid);
           } else {
             context
                 .read<TimerServices>()
-                .editTime(event.startTime, event.time, context);
+                .editTime(event.startTime, event.time, context, user.uid);
           }
         },
         onTap: () {
@@ -74,7 +77,9 @@ class EventItem extends StatelessWidget {
           _controller.text = event.title;
           var result = await showDialogextract(context, _controller);
           if (result != null) {
-            context.read<TimerServices>().edit(event.startTime, result);
+            context
+                .read<TimerServices>()
+                .edit(event.startTime, result, user.uid);
           }
         },
         child: Container(
@@ -86,7 +91,7 @@ class EventItem extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () {
-                      timerServices.editFav(event.startTime);
+                      timerServices.editFav(event.startTime, user.uid);
                     },
                     icon: event.isFavorite
                         ? const Icon(
@@ -113,7 +118,9 @@ class EventItem extends StatelessWidget {
                       var result =
                           await showDialogextract(context, _controller);
                       if (result != null) {
-                        context.read<TimerServices>().edit(event.id, result);
+                        context
+                            .read<TimerServices>()
+                            .edit(event.id, result, user.uid);
                       } else {}
                     },
                     icon: Icon(

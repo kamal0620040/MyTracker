@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../models/users.dart';
+import '../../provider/user_provider.dart';
 import 'timed_event.dart';
 import 'package:provider/provider.dart';
 import 'timer_service.dart';
@@ -17,9 +19,11 @@ class _PieChartTimeState extends State<PieChartTime> {
   int touchedIndex = -1;
   @override
   Widget build(BuildContext context) {
+    User user = Provider.of<UserProvider>(context).getUser;
+
     TimerServices timerServices = context.watch<TimerServices>();
     List<TimedEvent> timedEvents = timerServices.timedEventsAll;
-    timerServices.load('c1');
+    timerServices.load('c1', user.uid);
 
     List<Map<String, dynamic>> pieSectionList = [];
     for (var element in timedEvents) {
