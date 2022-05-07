@@ -45,6 +45,7 @@ dependencies:
   fl_chart: ^0.46.0
   sticky_headers: ^0.2.0
   introduction_screen: ^3.0.0
+  font_awesome_flutter: ^10.1.0
   flutter:
     sdk: flutter
 
@@ -85,6 +86,8 @@ flutter:
   assets:
     - assets/
   #   - images/a_dot_ham.jpeg
+    - assets/waiting.png
+    - assets/noTransaction.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

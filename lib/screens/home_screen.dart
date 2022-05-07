@@ -9,6 +9,8 @@ import 'package:mytracker/screens/Time/timer_app.dart';
 import 'package:mytracker/screens/nutrition_screen.dart';
 import 'package:provider/provider.dart';
 
+import 'Expense/widget/category_home.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -51,7 +53,13 @@ class _HomeScreenState extends State<HomeScreen> {
   //   );
   // }
 
-  void navigateToExpense() {}
+  void navigateToExpense() {
+  Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const CategoryHome(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
