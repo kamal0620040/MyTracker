@@ -136,53 +136,58 @@ class _HomeNutritionState extends State<HomeNutrition> {
                 SizedBox(
                   height: 10,
                 ),
-                Row(
-                  children: [
-                    _RadialProgress(
-                      width: width * 0.4,
-                      height: width * 0.4,
-                      energyValue: energy,
-                      progress: (energy as num) / 1000, // 1000 is target value
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                Container(
+                  child: Column(children: [
+                    Row(
                       children: [
-                        _IngredientProgress(
-                          ingredient: "Protein",
-                          progress: (protein as int) /
-                              300, // 300 is protein target value
-                          progressColor: Colors.redAccent,
-                          leftAmount: 300 - (protein as int),
-                          width: width * 0.28,
+                        _RadialProgress(
+                          width: width * 0.4,
+                          height: width * 0.4,
+                          energyValue: energy,
+                          progress:
+                              (energy as num) / 1000, // 1000 is target value
                         ),
                         SizedBox(
-                          height: 10,
+                          width: 10,
                         ),
-                        _IngredientProgress(
-                          ingredient: "Carbs",
-                          progress: (carbs as num) / 200,
-                          progressColor: Colors.deepPurpleAccent,
-                          leftAmount: 200 - (carbs as int),
-                          width: width * 0.28,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        _IngredientProgress(
-                          ingredient: "Fats",
-                          progress: (fat as num) / 200,
-                          progressColor: Colors.teal,
-                          leftAmount: 100 - (fat as int),
-                          width: width * 0.28,
-                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _IngredientProgress(
+                              ingredient: "Protein",
+                              progress: (protein as int) /
+                                  300, // 300 is protein target value
+                              progressColor: Colors.redAccent,
+                              leftAmount: 300 - (protein as int),
+                              width: width * 0.28,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            _IngredientProgress(
+                              ingredient: "Carbs",
+                              progress: (carbs as num) / 200,
+                              progressColor: Colors.deepPurpleAccent,
+                              leftAmount: 200 - (carbs as int),
+                              width: width * 0.28,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            _IngredientProgress(
+                              ingredient: "Fats",
+                              progress: (fat as num) / 200,
+                              progressColor: Colors.teal,
+                              leftAmount: 100 - (fat as int),
+                              width: width * 0.28,
+                            ),
+                          ],
+                        )
                       ],
-                    )
-                  ],
+                    ),
+                  ]),
                 ),
                 SizedBox(
                   height: 25,

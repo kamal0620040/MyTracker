@@ -6,6 +6,7 @@ import 'package:mytracker/screens/Nutrition/add_nutrition_screen.dart';
 import 'package:mytracker/screens/Nutrition/home_nutrition_screen.dart';
 import 'package:mytracker/screens/Nutrition/list_nutrition_screen.dart';
 import 'package:mytracker/screens/Nutrition/nutrition_stats.dart';
+import 'package:mytracker/screens/Nutrition/settings_nutrition.dart';
 import 'package:provider/provider.dart';
 import '../provider/user_provider.dart';
 // import 'package:provider/provider.dart';
@@ -55,7 +56,7 @@ class _NutritionState extends State<Nutrition> {
           ListScreen(),
           AddNutrition(),
           NutritionStats(),
-          Text('Settings'),
+          NutritionSetting(),
         ],
         controller: pageController,
         onPageChanged: onPageChanged,
