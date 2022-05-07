@@ -43,8 +43,12 @@ class OnBoardingPage extends StatelessWidget {
                 minWidth: 200,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(TimerApp.routeName);
+                    Navigator.pushReplacement<void, void>(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => const LoginScreen(),
+                      ),
+                    );
                   },
                   child: const Text(
                     "Continue",
