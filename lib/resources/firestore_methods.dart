@@ -150,26 +150,29 @@ class FireStoreMethods {
 
   // Upload Expense
   Future<String> uploadExpense(
-
-  String uid,
-  String title,
-  double amount,
-  DateTime date,
-  String category,
+    String uid,
+    String title,
+    double amount,
+    DateTime date,
+    String category,
   ) async {
     String res = "Some error occured.";
     try {
       String expenseId = const Uuid().v1();
       PostExpense postExpense = PostExpense(
-       id: expenseId,
+        id: expenseId,
         title: title,
         amount: amount,
         date: date,
         category: category,
-      
       );
 
-      _firestore.collection("expensePost").doc(uid).collection("Expense").doc(expenseId).set(
+      _firestore
+          .collection("expensePost")
+          .doc(uid)
+          .collection("Expense")
+          .doc(expenseId)
+          .set(
             postExpense.toJson(),
           );
       res = "success";
@@ -179,4 +182,3 @@ class FireStoreMethods {
     return res;
   }
 }
-

@@ -202,6 +202,9 @@ class _AddNutritionState extends State<AddNutrition> {
         showSnackBar(res, context);
       }
     } catch (err) {
+      setState(() {
+        _isLoadingForPost = false;
+      });
       showSnackBar(err.toString(), context);
     }
   }
@@ -231,14 +234,14 @@ class _AddNutritionState extends State<AddNutrition> {
         ),
         title: Text("Add something"),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.settings,
-            ),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: () {},
+        //     icon: Icon(
+        //       Icons.settings,
+        //     ),
+        //   ),
+        // ],
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -359,7 +362,7 @@ class _AddNutritionState extends State<AddNutrition> {
                               TextFieldInput(
                                 textEditingController: _quantityController,
                                 hintText: "Write Here",
-                                textInputType: TextInputType.text,
+                                textInputType: TextInputType.number,
                               ),
                             ],
                           ),
@@ -436,7 +439,7 @@ class _AddNutritionState extends State<AddNutrition> {
                               TextFieldInput(
                                 textEditingController: _energyController,
                                 hintText: "Write Here",
-                                textInputType: TextInputType.text,
+                                textInputType: TextInputType.number,
                               ),
                             ],
                           ),
@@ -455,7 +458,7 @@ class _AddNutritionState extends State<AddNutrition> {
                               TextFieldInput(
                                 textEditingController: _proteinController,
                                 hintText: "Write Here",
-                                textInputType: TextInputType.text,
+                                textInputType: TextInputType.number,
                               ),
                             ],
                           ),
@@ -478,7 +481,7 @@ class _AddNutritionState extends State<AddNutrition> {
                               TextFieldInput(
                                 textEditingController: _fatsController,
                                 hintText: "Write Here",
-                                textInputType: TextInputType.text,
+                                textInputType: TextInputType.number,
                               ),
                             ],
                           ),
@@ -497,7 +500,7 @@ class _AddNutritionState extends State<AddNutrition> {
                               TextFieldInput(
                                 textEditingController: _carbController,
                                 hintText: "Write Here",
-                                textInputType: TextInputType.text,
+                                textInputType: TextInputType.number,
                               ),
                             ],
                           ),
