@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mytracker/resources/auth_methods.dart';
@@ -34,6 +35,10 @@ class _SignupScreenState extends State<SignupScreen> {
     Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
       _image = im;
+    });
+    final ByteData bytes = await rootBundle.load('assets/profile.jpg');
+    setState(() {
+      _image = bytes.buffer.asUint8List();
     });
   }
 
@@ -129,7 +134,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                   : const CircleAvatar(
                                       radius: 64,
                                       backgroundImage: NetworkImage(
-                                          "https://freepikpsd.com/file/2019/10/default-profile-picture-png-1-Transparent-Images.png"),
+                                          "https://i.stack.imgur.com/34AD2.jpg"),
                                     ),
                             ),
                             Positioned(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mytracker/resources/auth_methods.dart';
+import 'package:mytracker/screens/forget_password.dart';
 import 'package:mytracker/screens/home_screen.dart';
 import 'package:mytracker/screens/signup_screen.dart';
 import 'package:mytracker/utils/utils.dart';
@@ -49,6 +50,12 @@ class _LoginScreenState extends State<LoginScreen> {
       MaterialPageRoute(
         builder: (context) => const SignupScreen(),
       ),
+    );
+  }
+
+  void navigateToForgetPassword() {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => const ForgetPassword()),
     );
   }
 
@@ -175,6 +182,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(
                           height: 24,
+                        ),
+                        GestureDetector(
+                          onTap: navigateToForgetPassword,
+                          child: Container(
+                            width: double.infinity,
+                            child: Text(
+                              " Forget Password",
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Color.fromRGBO(101, 146, 233, 1),
+                                ),
+                              ),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                          ),
                         ),
                         //transition for signin
                         Flexible(

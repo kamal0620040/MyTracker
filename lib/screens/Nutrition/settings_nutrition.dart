@@ -47,18 +47,23 @@ class _NutritionSettingState extends State<NutritionSetting> {
   }
 
   void postGoal(String uid) async {
-    String res = await FireStoreMethods().uploadGoal(
-      uid,
-      double.parse(_proteinController.text.toString()),
-      double.parse(_energyController.text.toString()),
-      double.parse(_fatsController.text.toString()),
-      double.parse(_carbsController.text.toString()),
-    );
-    if (res == "success") {
-      setState(() {
-        _showForm = false;
-      });
-      showSnackBar("Goal Posted Successfully.", context);
+    String res;
+    try {
+      res = await FireStoreMethods().uploadGoal(
+        uid,
+        double.parse(_proteinController.text.toString()),
+        double.parse(_energyController.text.toString()),
+        double.parse(_fatsController.text.toString()),
+        double.parse(_carbsController.text.toString()),
+      );
+      if (res == "success") {
+        setState(() {
+          _showForm = false;
+        });
+        showSnackBar("Goal Posted Successfully.", context);
+      }
+    } catch (e) {
+      showSnackBar("Something went wrong.", context);
     }
   }
 
