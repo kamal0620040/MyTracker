@@ -36,16 +36,24 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() {
       _image = im;
     });
-    final ByteData bytes = await rootBundle.load('assets/profile.jpg');
-    setState(() {
-      _image = bytes.buffer.asUint8List();
-    });
+    // if (_image == null) {
+    //   final ByteData bytes = await rootBundle.load('assets/profile.jpg');
+    //   setState(() {
+    //     _image = bytes.buffer.asUint8List();
+    //   });
+    // }
   }
 
   void signUpUser() async {
     setState(() {
       _isLoading = true;
     });
+    if (_image == null) {
+      final ByteData bytes = await rootBundle.load('assets/profile.jpg');
+      setState(() {
+        _image = bytes.buffer.asUint8List();
+      });
+    }
     String res = await AuthMethods().signUpUser(
       email: _emailController.text,
       password: _passwordController.text,
