@@ -12,7 +12,6 @@ import 'package:mytracker/screens/Time/onboarding_page.dart';
 import 'package:mytracker/screens/Time/timer_app.dart';
 import 'package:mytracker/screens/Time/timer_service.dart';
 import 'package:mytracker/screens/home_screen.dart';
-import 'package:mytracker/screens/login_screen.dart';
 import 'package:mytracker/utils/colors.dart';
 import 'package:provider/provider.dart';
 
